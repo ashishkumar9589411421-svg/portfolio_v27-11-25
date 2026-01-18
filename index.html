@@ -94,6 +94,16 @@
             border-color: rgba(34, 197, 94, 0.5);
             box-shadow: 0 20px 60px rgba(34, 197, 94, 0.2);
         }
+        #space-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at center, #0b1021 0%, #000000 100%); /* Deep ISRO Blue/Black */
+            pointer-events: none;
+        }
 
         /* Animations */
         @keyframes float {
@@ -292,6 +302,7 @@
     </style>
 </head>
 <body>
+    <canvas id="space-canvas"></canvas>
     <!-- Navbar -->
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
         <div class="max-w-7xl mx-auto">
@@ -308,13 +319,14 @@
                 </div>
 
                 <!-- Resume Button -->
-                <button class="btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="7 10 12 15 17 10"></polyline>
-                        <line x1="12" y1="15" x2="12" y2="3"></line>
-                    </svg>
-                    Resume
+                <a href="resume.pdf" class="btn-primary" download>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+    </svg>
+    Resume
+</a>
                 </button>
             </div>
         </div>
@@ -1020,6 +1032,304 @@
                     card.classList.contains("expanded") ? "Hide details" : "View details";
             });
         });
+        /* -----------------------------------------------
+   ISRO / ROCKET SCIENCE / SOLAR SYSTEM ENGINE
+   ----------------------------------------------- */
+const canvas = document.getElementById('space-canvas');
+const ctx = canvas.getContext('2d');
+
+let width, height, centerX, centerY;
+let stars = [];
+let orbits = [];
+let shootingStars = [];
+
+// Mouse Parallax
+let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+let viewX = 0;
+let viewY = 0;
+
+// Indian Flag Colors
+const COLORS = {
+    saffron: '#FF9933',
+    white: '#FFFFFF',
+    green: '#138808',
+    navy: '#000080',
+    spaceBlue: '#38bdf8'
+};
+
+window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+});
+
+window.addEventListener('resize', init);
+
+// Helper: Rotation logic
+function rotate(cx, cy, x, y, angle) {
+    let radians = (Math.PI / 180) * angle;
+    let cos = Math.cos(radians);
+    let sin = Math.sin(radians);
+    let nx = (cos * (x - cx)) + (sin * (y - cy)) + cx;
+    let ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
+    return [nx, ny];
+}
+
+// 1. BACKGROUND STARS
+class Star {
+    constructor() {
+        this.reset();
+    }
+    reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 1.5;
+        this.alpha = Math.random();
+        this.blink = Math.random() * 0.02;
+    }
+    draw() {
+        this.alpha += this.blink;
+        if (this.alpha <= 0 || this.alpha >= 1) this.blink *= -1;
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+        ctx.fill();
+    }
+}
+
+// 2. THE ORBITING OBJECTS PARENT CLASS
+class OrbitObject {
+    constructor(radius, speed, type) {
+        this.radius = radius;
+        this.angle = Math.random() * 360;
+        this.speed = speed;
+        this.type = type; // 'planet', 'rocket', 'iss', 'satellite'
+        this.trail = [];
+    }
+
+    update() {
+        this.angle += this.speed;
+        // Parallax Offset Calculation
+        let drawX = centerX + viewX + Math.cos(this.angle * Math.PI/180) * this.radius;
+        let drawY = centerY + viewY + Math.sin(this.angle * Math.PI/180) * (this.radius * 0.8); // 0.8 makes it an ellipse (3D feel)
+        
+        // Trail Logic
+        this.trail.push({x: drawX, y: drawY});
+        if (this.trail.length > 25) this.trail.shift();
+
+        this.draw(drawX, drawY);
+    }
+
+    draw(x, y) {
+        // Draw Orbit Line (Faint)
+        ctx.beginPath();
+        ctx.ellipse(centerX + viewX, centerY + viewY, this.radius, this.radius * 0.8, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+        ctx.stroke();
+
+        // Draw Trail
+        for (let i = 0; i < this.trail.length; i++) {
+            let t = this.trail[i];
+            ctx.beginPath();
+            let alpha = i / this.trail.length;
+            
+            // Tricolor Trail for specific objects
+            if (this.type === 'rocket') ctx.fillStyle = `rgba(255, 153, 51, ${alpha})`; // Saffron
+            else if (this.type === 'iss') ctx.fillStyle = `rgba(56, 189, 248, ${alpha})`; // Blue
+            else ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.3})`;
+            
+            ctx.arc(t.x, t.y, 1.5, 0, Math.PI*2);
+            ctx.fill();
+        }
+
+        ctx.save();
+        ctx.translate(x, y);
+
+        // --- DRAWING THE OBJECTS ---
+        
+        if (this.type === 'rocket') {
+            // ROTATE ROCKET TO FACE DIRECTION
+            // Angle + 90 degrees correction
+            ctx.rotate((this.angle + 90) * Math.PI / 180);
+            
+            // Rocket Body
+            ctx.fillStyle = '#e2e8f0';
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 5, 15, 0, 0, Math.PI*2);
+            ctx.fill();
+            
+            // Fins (Indian Tricolor)
+            ctx.fillStyle = COLORS.saffron;
+            ctx.fillRect(-6, 5, 4, 8); // Left Fin
+            ctx.fillStyle = COLORS.green;
+            ctx.fillRect(2, 5, 4, 8);  // Right Fin
+            
+            // Engine Flame
+            ctx.fillStyle = '#f59e0b';
+            ctx.beginPath();
+            ctx.moveTo(-3, 15);
+            ctx.lineTo(0, 25 + Math.random()*5); // Flickering flame
+            ctx.lineTo(3, 15);
+            ctx.fill();
+
+        } else if (this.type === 'iss') {
+            // International Space Station Shape
+            ctx.fillStyle = '#94a3b8'; // Metallic
+            ctx.fillRect(-15, -2, 30, 4); // Main beam
+            
+            // Solar Panels (Blue Grid)
+            ctx.fillStyle = COLORS.spaceBlue;
+            ctx.fillRect(-20, -8, 8, 16); // Left Panel
+            ctx.fillRect(12, -8, 8, 16);  // Right Panel
+            
+            // Glow
+            ctx.shadowColor = COLORS.spaceBlue;
+            ctx.shadowBlur = 10;
+
+        } else if (this.type === 'satellite') {
+            // Simple Satellite
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(0, 0, 3, 0, Math.PI*2);
+            ctx.fill();
+            // Blinking Light
+            if (Math.floor(Date.now() / 500) % 2 === 0) {
+                ctx.fillStyle = 'red';
+                ctx.fillRect(-1, -1, 2, 2);
+            }
+
+        } else {
+            // Standard Planet
+            ctx.fillStyle = this.type;
+            ctx.beginPath();
+            ctx.arc(0, 0, 6, 0, Math.PI*2);
+            ctx.fill();
+            // Shadow (3D effect)
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.beginPath();
+            ctx.arc(2, 2, 5, 0, Math.PI*2);
+            ctx.fill();
+        }
+
+        ctx.restore();
+    }
+}
+
+// 3. SHOOTING STARS
+class ShootingStar {
+    constructor() {
+        this.reset();
+    }
+    reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height * 0.5;
+        this.len = Math.random() * 80 + 10;
+        this.speed = Math.random() * 10 + 6;
+        this.size = Math.random() * 1 + 0.1;
+        this.angle = 45; // Diagonal fall
+    }
+    draw() {
+        this.x -= this.speed;
+        this.y += this.speed;
+        
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle * Math.PI / 180);
+        
+        let gradient = ctx.createLinearGradient(0, 0, this.len, 0);
+        gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+        gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+        
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, this.len, this.size);
+        ctx.restore();
+
+        if (this.x < 0 || this.y > height) this.reset();
+    }
+}
+
+// INIT
+function init() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    centerX = width / 2;
+    centerY = height / 2;
+
+    stars = [];
+    orbits = [];
+    shootingStars = [];
+
+    // Add Stars
+    for (let i = 0; i < 200; i++) stars.push(new Star());
+
+    // Add Shooting Stars
+    for (let i = 0; i < 2; i++) shootingStars.push(new ShootingStar());
+
+    // --- ADD SOLAR SYSTEM OBJECTS ---
+    
+    // 1. Mercury-ish
+    orbits.push(new OrbitObject(60, 0.8, '#a3a3a3'));
+    
+    // 2. Venus-ish
+    orbits.push(new OrbitObject(100, 0.6, '#fbbf24'));
+    
+    // 3. EARTH & ISRO ROCKET
+    orbits.push(new OrbitObject(160, 0.4, '#3b82f6')); // Earth blue
+    orbits.push(new OrbitObject(200, 0.7, 'rocket'));  // The Rocket!
+    
+    // 4. Mars (Red)
+    orbits.push(new OrbitObject(260, 0.3, '#ef4444')); 
+    
+    // 5. ISS Station (Fast & Far)
+    orbits.push(new OrbitObject(340, 0.2, 'iss'));
+
+    // 6. Tricolor Satellites (Outer ring)
+    orbits.push(new OrbitObject(400, 0.15, COLORS.saffron));
+    orbits.push(new OrbitObject(420, 0.15, COLORS.white));
+    orbits.push(new OrbitObject(440, 0.15, COLORS.green));
+}
+
+function animate() {
+    ctx.clearRect(0, 0, width, height);
+
+    // Parallax Math (Smooth Camera)
+    let targetX = (mouse.x - width/2) * 0.02;
+    let targetY = (mouse.y - height/2) * 0.02;
+    viewX += (targetX - viewX) * 0.05;
+    viewY += (targetY - viewY) * 0.05;
+
+    // Draw Stars
+    stars.forEach(star => star.draw());
+
+    // Draw Shooting Stars
+    shootingStars.forEach(s => s.draw());
+
+    // Draw Central Sun / Core (Glowing)
+    ctx.save();
+    ctx.translate(centerX + viewX, centerY + viewY);
+    ctx.shadowBlur = 40;
+    ctx.shadowColor = '#fbbf24'; // Sun glow
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(0, 0, 15, 0, Math.PI*2);
+    ctx.fill();
+    
+    // Indian Chakra Blue Ring inside Sun
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = COLORS.navy;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(0, 0, 15, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.restore();
+
+    // Draw Orbits & Objects
+    orbits.forEach(orbit => orbit.update());
+
+    requestAnimationFrame(animate);
+}
+
+init();
+animate();
 
         // Contact form
         const quickForm = document.getElementById("quickContactForm");
