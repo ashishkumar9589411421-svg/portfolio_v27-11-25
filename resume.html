@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashish Kumar | Interactive Resume Book</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@11/dist/framer-motion.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            color: #1e293b;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .perspective-container {
+            perspective: 2000px;
+        }
+
+        .book-shadow {
+            box-shadow: 
+                0 20px 50px rgba(0,0,0,0.5),
+                0 10px 20px rgba(0,0,0,0.3),
+                inset 0 0 80px rgba(0,0,0,0.1);
+        }
+        
+        .page-curl {
+            background: linear-gradient(to right, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 10%);
+        }
+
+        /* Galaxy Background Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+        @keyframes rotate-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes shooting-star {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(200vw) translateY(200vh) rotate(45deg); opacity: 0; }
+        }
+
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
+        .animate-rotate-slow { animation: rotate-slow 120s linear infinite; }
+        .animate-shooting-star { animation: shooting-star 3s linear; }
+
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            .perspective-container {
+                perspective: 1500px;
+                overflow-y: auto;
+                height: 100vh;
+                padding: 20px 0;
+            }
+            .book-container {
+                transform-style: flat !important;
+                flex-direction: column;
+                height: auto !important;
+                width: 90vw !important;
+                gap: 20px;
+            }
+            .page-wrapper {
+                position: relative !important;
+                width: 100% !important;
+                height: 600px !important;
+                transform: none !important;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            }
+            .left-base {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Audio Element for Page Flip -->
+<audio id="pageFlipSound" preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div id="root"></div>
+
+<script type="text/babel">
+    const { useState, useEffect, useRef, useMemo } = React;
+    const { motion, AnimatePresence, useMotionValue, useSpring, useTransform } = window.Motion;
+
+    // --- Complete Data from index.html ---
+    const projects = [
+        {
+            id: 1,
+            title: "MadAsGalaxyClock",
+            category: "Desktop App",
+            desc: "A custom animated desktop clock inspired by sci-fi arc reactors with rotating elements, glowing effects, and a clean fullscreen UI.",
+            stack: ["Python", "Tkinter", "UI Design"],
+            icon: "clock",
+            color: "from-purple-500 to-indigo-500",
+            github: "https://github.com/ashishkumar9589411421-svg/MadAsGalexyClock"
+        },
+        {
+            id: 2,
+            title: "OBITO AI Assistant",
+            category: "AI / Automation",
+            desc: "A personal voice assistant with wake word detection, face recognition, reminders, system control, news, weather, and more.",
+            stack: ["Python", "OpenCV", "AI", "Automation"],
+            icon: "bot",
+            color: "from-red-500 to-orange-500",
+            github: "https://github.com/ashishkumar9589411421-svg/Obito-Assistent"
+        },
+        {
+            id: 3,
+            title: "TimeJet",
+            category: "Desktop Widget",
+            desc: "A fully custom desktop clock widget featuring real-time weather, personalized greetings, and elegant UI animations.",
+            stack: ["Python", "Weather API", "UI"],
+            icon: "timer",
+            color: "from-blue-500 to-cyan-500",
+            github: "https://github.com/ashishkumar9589411421-svg/TimeJet"
+        },
+        {
+            id: 4,
+            title: "The Tongue Taste",
+            category: "Web Design",
+            desc: "A visually rich, modern restaurant website with bold hero section, immersive food imagery, and smooth animations.",
+            stack: ["HTML", "CSS", "JavaScript"],
+            icon: "utensils",
+            color: "from-amber-500 to-yellow-500",
+            live: "https://project-ramen-jan.netlify.app/"
+        },
+        {
+            id: 5,
+            title: "Navya Jewellers",
+            category: "Full Stack / E-Commerce",
+            desc: "A fully live, production-ready jewellery business website with dynamic frontend, secure backend, admin dashboard, and order management.",
+            stack: ["Full-Stack", "Admin Panel", "Production"],
+            icon: "gem",
+            color: "from-emerald-500 to-teal-500",
+            live: "https://navya-jewellers-b728566e.base44.app/"
+        },
+        {
+            id: 6,
+            title: "In.dl Downloader",
+            category: "SaaS / Full Stack",
+            desc: "A powerful, full-stack Instagram media downloader featuring user authentication, a credit-based freemium model, and a comprehensive admin dashboard.",
+            stack: ["Flask", "Python", "SaaS", "FFmpeg"],
+            icon: "download-cloud",
+            color: "from-pink-500 to-rose-500",
+            live: "https://byashish.online",
+            github: "https://github.com/ashishkumar9589411421-svg/INSTA_DOWN"
+        },
+        {
+            id: 7,
+            title: "Baba Car Bazar",
+            category: "Web Application",
+            desc: "A live vehicle marketplace website allowing users to browse listings with a clean, modern interface.",
+            stack: ["Web", "Live Preview", "Responsive"],
+            icon: "car",
+            color: "from-indigo-500 to-blue-600",
+            live: "https://baba-car-bazar-website-v-1-0-0.onrender.com/"
+        },
+        {
+            id: 8,
+            title: "Portfolio Website",
+            category: "Web Design",
+            desc: "This modern, fully responsive portfolio with glassmorphism effects, animations, and smooth scrolling built without heavy frameworks.",
+            stack: ["HTML", "CSS", "JavaScript", "UI/UX"],
+            icon: "globe",
+            color: "from-cyan-500 to-blue-500",
+            live: "#"
+        }
+    ];
+
+    const skills = [
+        { name: "Python", level: 90, color: "bg-blue-500" },
+        { name: "JavaScript", level: 85, color: "bg-yellow-500" },
+        { name: "React", level: 80, color: "bg-cyan-500" },
+        { name: "Flask", level: 75, color: "bg-green-600" },
+        { name: "UI/UX Design", level: 88, color: "bg-purple-500" },
+        { name: "OpenCV", level: 70, color: "bg-orange-600" }
+    ];
+
+    const achievements = [
+        { title: "Full Stack Certification", org: "Udemy", year: "2024", icon: "award", color: "bg-yellow-500" },
+        { title: "Python Advanced", org: "Coursera", year: "2023", icon: "file-badge", color: "bg-blue-500" },
+        { title: "React Developer", org: "Meta", year: "2024", icon: "code-2", color: "bg-cyan-500" },
+        { title: "Hackathon Finalist", org: "CodeFest 2024", year: "2024", icon: "trophy", color: "bg-purple-500" },
+        { title: "Open Source Contributor", org: "GitHub", year: "2023", icon: "github", color: "bg-slate-700" }
+    ];
+
+    // --- Components ---
+
+    const Icon = ({ name, size = 24, className = "" }) => {
+        useEffect(() => {
+            if (window.lucide) lucide.createIcons();
+        }, [name]);
+        return <i data-lucide={name} className={className} style={{ width: size, height: size }}></i>;
+    };
+
+    // Galaxy Background
+    const ParticleBackground = () => {
+        const [shootingStars, setShootingStars] = useState([]);
+        
+        useEffect(() => {
+            const interval = setInterval(() => {
+                if (Math.random() > 0.7) {
+                    const id = Date.now();
+                    setShootingStars(prev => [...prev, id]);
+                    setTimeout(() => {
+                        setShootingStars(prev => prev.filter(s => s !== id));
+                    }, 3000);
+                }
+            }, 2000);
+            return () => clearInterval(interval);
+        }, []);
+
+        return (
+            <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+                {/* Nebula Background */}
+                <div className="absolute inset-0 animate-rotate-slow opacity-30">
+                    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600 rounded-full blur-[128px] animate-pulse-glow" />
+                    <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600 rounded-full blur-[128px] animate-pulse-glow" style={{ animationDelay: '2s' }} />
+                    <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-cyan-500 rounded-full blur-[96px] animate-pulse-glow" style={{ animationDelay: '1s' }} />
+                </div>
+
+                {/* Floating Orbs */}
+                {[...Array(6)].map((_, i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute rounded-full bg-white/10 blur-sm"
+                        style={{
+                            width: Math.random() * 100 + 50,
+                            height: Math.random() * 100 + 50,
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                        }}
+                        animate={{
+                            y: [0, -30, 0],
+                            x: [0, Math.random() * 20 - 10, 0],
+                            scale: [1, 1.2, 1],
+                        }}
+                        transition={{
+                            duration: Math.random() * 5 + 5,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: Math.random() * 2
+                        }}
+                    />
+                ))}
+
+                {/* Shooting Stars */}
+                {shootingStars.map(id => (
+                    <div key={id} className="absolute top-0 left-0 w-1 h-20 bg-gradient-to-b from-white to-transparent animate-shooting-star" />
+                ))}
+
+                {/* Original Particles */}
+                {[...Array(30)].map((_, i) => (
+                    <motion.div
+                        key={`p-${i}`}
+                        className="absolute rounded-full bg-white"
+                        style={{
+                            width: Math.random() * 3 + 1,
+                            height: Math.random() * 3 + 1,
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                            opacity: Math.random() * 0.5 + 0.2,
+                        }}
+                        animate={{
+                            y: [0, -100, 0],
+                            opacity: [0, 0.8, 0],
+                        }}
+                        transition={{
+                            duration: Math.random() * 10 + 10,
+                            repeat: Infinity,
+                            ease: "linear",
+                            delay: Math.random() * 5
+                        }}
+                    />
+                ))}
+            </div>
+        );
+    };
+
+    // Magnetic Button
+    const MagneticButton = ({ children, onClick, className }) => {
+        const ref = useRef(null);
+        const x = useMotionValue(0);
+        const y = useMotionValue(0);
+        const springConfig = { damping: 15, stiffness: 150 };
+        const springX = useSpring(x, springConfig);
+        const springY = useSpring(y, springConfig);
+
+        const handleMouseMove = (e) => {
+            if (!ref.current) return;
+            const rect = ref.current.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            x.set((e.clientX - centerX) / 4);
+            y.set((e.clientY - centerY) / 4);
+        };
+
+        const handleMouseLeave = () => {
+            x.set(0);
+            y.set(0);
+        };
+
+        return (
+            <motion.button
+                ref={ref}
+                style={{ x: springX, y: springY }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                onClick={onClick}
+                className={className}
+                whileTap={{ scale: 0.95 }}
+            >
+                {children}
+            </motion.button>
+        );
+    };
+
+    // Animated Counter
+    const AnimatedCounter = ({ value, suffix = "" }) => {
+        const [count, setCount] = useState(0);
+        const ref = useRef(null);
+        const [isVisible, setIsVisible] = useState(false);
+
+        useEffect(() => {
+            const observer = new IntersectionObserver(([entry]) => {
+                if (entry.isIntersecting) setIsVisible(true);
+            }, { threshold: 0.5 });
+            
+            if (ref.current) observer.observe(ref.current);
+            return () => observer.disconnect();
+        }, []);
+
+        useEffect(() => {
+            if (!isVisible) return;
+            
+            let startTime;
+            const duration = 2000;
+            
+            const animate = (timestamp) => {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                setCount(Math.floor(easeOutQuart * value));
+                
+                if (progress < 1) requestAnimationFrame(animate);
+            };
+            
+            requestAnimationFrame(animate);
+        }, [isVisible, value]);
+
+        return <span ref={ref}>{count}{suffix}</span>;
+    };
+
+    // Radar Chart Component
+    const RadarChart = ({ data }) => {
+        const size = 200;
+        const center = size / 2;
+        const radius = 80;
+        const angleStep = (Math.PI * 2) / data.length;
+
+        const points = data.map((skill, i) => {
+            const angle = i * angleStep - Math.PI / 2;
+            const r = (skill.level / 100) * radius;
+            return {
+                x: center + r * Math.cos(angle),
+                y: center + r * Math.sin(angle),
+                label: skill.name,
+                angle: angle
+            };
+        });
+
+        const pathD = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ') + ' Z';
+
+        return (
+            <div className="flex flex-col items-center mb-6">
+                <svg width={size} height={size} className="overflow-visible">
+                    {/* Background grid */}
+                    {[20, 40, 60, 80, 100].map((level, i) => (
+                        <polygon
+                            key={i}
+                            points={data.map((_, j) => {
+                                const angle = j * angleStep - Math.PI / 2;
+                                const r = (level / 100) * radius;
+                                return `${center + r * Math.cos(angle)},${center + r * Math.sin(angle)}`;
+                            }).join(' ')}
+                            fill="none"
+                            stroke="#e2e8f0"
+                            strokeWidth="1"
+                        />
+                    ))}
+                    
+                    {/* Axes */}
+                    {data.map((_, i) => {
+                        const angle = i * angleStep - Math.PI / 2;
+                        return (
+                            <line
+                                key={i}
+                                x1={center}
+                                y1={center}
+                                x2={center + radius * Math.cos(angle)}
+                                y2={center + radius * Math.sin(angle)}
+                                stroke="#e2e8f0"
+                                strokeWidth="1"
+                            />
+                        );
+                    })}
+
+                    {/* Data polygon */}
+                    <motion.path
+                        d={pathD}
+                        fill="rgba(99, 102, 241, 0.2)"
+                        stroke="#6366f1"
+                        strokeWidth="2"
+                        initial={{ pathLength: 0, opacity: 0 }}
+                        animate={{ pathLength: 1, opacity: 1 }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
+                    />
+
+                    {/* Data points */}
+                    {points.map((p, i) => (
+                        <motion.circle
+                            key={i}
+                            cx={p.x}
+                            cy={p.y}
+                            r="4"
+                            fill="#6366f1"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 1 + i * 0.1 }}
+                        />
+                    ))}
+
+                    {/* Labels */}
+                    {points.map((p, i) => {
+                        const labelR = radius + 20;
+                        const lx = center + labelR * Math.cos(p.angle);
+                        const ly = center + labelR * Math.sin(p.angle);
+                        return (
+                            <text
+                                key={`label-${i}`}
+                                x={lx}
+                                y={ly}
+                                textAnchor="middle"
+                                dominantBaseline="middle"
+                                className="text-[10px] fill-slate-500 font-medium"
+                            >
+                                {p.label}
+                            </text>
+                        );
+                    })}
+                </svg>
+            </div>
+        );
+    };
+
+    // Project Modal
+    const ProjectModal = ({ project, onClose }) => {
+        useEffect(() => {
+            const handleEsc = (e) => { if (e.key === 'Escape') onClose(); };
+            window.addEventListener('keydown', handleEsc);
+            return () => window.removeEventListener('keydown', handleEsc);
+        }, [onClose]);
+
+        if (!project) return null;
+
+        return (
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                onClick={onClose}
+            >
+                <motion.div
+                    initial={{ scale: 0.8, opacity: 0, y: 50 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    exit={{ scale: 0.8, opacity: 0, y: 50 }}
+                    transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                    className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <div className={`h-32 bg-gradient-to-br ${project.color} flex items-center justify-center`}>
+                        <Icon name={project.icon} size={48} className="text-white" />
+                    </div>
+                    <div className="p-6">
+                        <div className="flex justify-between items-start mb-2">
+                            <h3 className="text-2xl font-bold text-slate-800">{project.title}</h3>
+                            <button onClick={onClose} className="p-1 hover:bg-slate-100 rounded-full">
+                                <Icon name="x" size={20} className="text-slate-400" />
+                            </button>
+                        </div>
+                        <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-full">
+                            {project.category}
+                        </span>
+                        <p className="text-slate-600 mt-4 text-sm leading-relaxed">
+                            {project.desc}
+                        </p>
+                        <div className="flex flex-wrap gap-2 mt-4">
+                            {project.stack.map((tech, i) => (
+                                <span key={i} className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">
+                                    {tech}
+                                </span>
+                            ))}
+                        </div>
+                        <div className="flex gap-3 mt-6">
+                            {project.live && (
+                                <a
+                                    href={project.live}
+                                    target="_blank"
+                                    className="flex-1 bg-slate-900 text-white text-center py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-colors"
+                                >
+                                    Live Demo
+                                </a>
+                            )}
+                            {project.github && (
+                                <a
+                                    href={project.github}
+                                    target="_blank"
+                                    className="flex-1 border border-slate-200 text-slate-700 text-center py-2 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors"
+                                >
+                                    GitHub
+                                </a>
+                            )}
+                        </div>
+                    </div>
+                </motion.div>
+            </motion.div>
+        );
+    };
+
+    // Page Component with Light Reflection
+    const Page = ({ children, pageIndex, isFlipped, totalPages, mousePos, isMobile }) => {
+        const zIndex = isFlipped ? pageIndex : (totalPages - pageIndex + 10);
+        
+        // Calculate light position based on mouse
+        const lightX = useTransform(() => ((mousePos.x + 1) / 2) * 100);
+        const lightY = useTransform(() => ((mousePos.y + 1) / 2) * 100);
+
+        return (
+            <motion.div
+                className="absolute right-0 top-0 w-1/2 h-full origin-left page-wrapper"
+                style={{ 
+                    transformStyle: 'preserve-3d',
+                    zIndex: zIndex
+                }}
+                initial={false}
+                animate={{
+                    rotateY: isFlipped ? -180 : 0,
+                }}
+                transition={{
+                    type: "spring",
+                    stiffness: 60,
+                    damping: 20,
+                    mass: 1.2
+                }}
+            >
+                {children}
+                
+                {/* Light Reflection Overlay */}
+                {!isMobile && (
+                    <motion.div
+                        className="absolute inset-0 pointer-events-none z-50 mix-blend-overlay opacity-30"
+                        style={{
+                            background: useTransform(
+                                [lightX, lightY],
+                                ([x, y]) => `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.8) 0%, transparent 60%)`
+                            )
+                        }}
+                    />
+                )}
+            </motion.div>
+        );
+    };
+
+    const PageFront = ({ children, isCover = false }) => (
+        <div 
+            className={`absolute inset-0 backface-hidden rounded-r-lg shadow-inner page-curl overflow-hidden ${isCover ? 'bg-slate-900 text-white' : 'bg-white'}`}
+            style={{ backfaceVisibility: 'hidden' }}
+        >
+            {children}
+        </div>
+    );
+
+    const PageBack = ({ children }) => (
+        <div 
+            className="absolute inset-0 backface-hidden bg-slate-50 rounded-l-lg shadow-inner overflow-hidden"
+            style={{ 
+                backfaceVisibility: 'hidden', 
+                transform: 'rotateY(180deg)',
+                background: 'linear-gradient(to left, rgba(0,0,0,0.05), transparent 20%)'
+            }}
+        >
+            {children}
+        </div>
+    );
+
+    // --- Main App ---
+    function App() {
+        const [currentPage, setCurrentPage] = useState(0);
+        const [flippedPages, setFlippedPages] = useState([]);
+        const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+        const [isMobile, setIsMobile] = useState(false);
+        const [showAI, setShowAI] = useState(false);
+        const [selectedProject, setSelectedProject] = useState(null);
+        const [hasEntered, setHasEntered] = useState(false);
+        
+        const audioRef = useRef(null);
+        const totalPages = 6; // Cover(1), About(2), Projects(3), Skills(4), Achievements(5), Contact(6)
+
+        // Audio Setup
+        useEffect(() => {
+            audioRef.current = document.getElementById('pageFlipSound');
+        }, []);
+
+        const playFlipSound = () => {
+            if (audioRef.current && !isMobile) {
+                audioRef.current.currentTime = 0;
+                audioRef.current.play().catch(() => {});
+            }
+        };
+
+        // Mobile Check
+        useEffect(() => {
+            const checkMobile = () => setIsMobile(window.innerWidth < 768);
+            checkMobile();
+            window.addEventListener('resize', checkMobile);
+            return () => window.removeEventListener('resize', checkMobile);
+        }, []);
+
+        // Mouse Parallax
+        useEffect(() => {
+            if (isMobile) return;
+            const handleMouseMove = (e) => {
+                setMousePos({
+                    x: (e.clientX / window.innerWidth - 0.5) * 2,
+                    y: (e.clientY / window.innerHeight - 0.5) * 2
+                });
+            };
+            window.addEventListener('mousemove', handleMouseMove);
+            return () => window.removeEventListener('mousemove', handleMouseMove);
+        }, [isMobile]);
+
+        // AI Assistant
+        useEffect(() => {
+            const timer = setTimeout(() => {
+                if (!sessionStorage.getItem('aiShown')) {
+                    setShowAI(true);
+                    sessionStorage.setItem('aiShown', 'true');
+                }
+            }, 1500);
+            
+            const closeTimer = setTimeout(() => {
+                setShowAI(false);
+            }, 5500);
+            
+            return () => {
+                clearTimeout(timer);
+                clearTimeout(closeTimer);
+            };
+        }, []);
+
+        // Entry Animation
+        useEffect(() => {
+            const timer = setTimeout(() => setHasEntered(true), 100);
+            return () => clearTimeout(timer);
+        }, []);
+
+        // Navigation
+        const handleNext = () => {
+            if (currentPage < totalPages) {
+                playFlipSound();
+                const nextPage = currentPage + 1;
+                setFlippedPages([...flippedPages, nextPage]);
+                setCurrentPage(nextPage);
+            }
+        };
+
+        const handlePrev = () => {
+            if (currentPage > 0) {
+                playFlipSound();
+                const prevPage = currentPage;
+                setFlippedPages(flippedPages.filter(p => p !== prevPage));
+                setCurrentPage(prevPage - 1);
+            }
+        };
+
+        const isFlipped = (pageIndex) => flippedPages.includes(pageIndex);
+
+        const rotateX = isMobile ? 0 : mousePos.y * -5;
+        const rotateY = isMobile ? 0 : mousePos.x * 5;
+
+        return (
+            <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950">
+                <ParticleBackground />
+                <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(79,70,229,0.1),transparent_70%)] pointer-events-none" />
+
+                {/* AI Assistant Popup */}
+                <AnimatePresence>
+                    {showAI && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                            className="fixed bottom-24 right-6 z-50 bg-white rounded-2xl shadow-2xl p-4 max-w-xs border border-indigo-100"
+                        >
+                            <button 
+                                onClick={() => setShowAI(false)}
+                                className="absolute top-2 right-2 text-slate-400 hover:text-slate-600"
+                            >
+                                <Icon name="x" size={16} />
+                            </button>
+                            <div className="flex items-start gap-3">
+                                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center text-white shrink-0">
+                                    <Icon name="bot" size={20} />
+                                </div>
+                                <div>
+                                    <p className="text-sm text-slate-700 font-medium">
+                                        Hello, I'm Ashish. Let me guide you through my interactive resume.
+                                    </p>
+                                    <p className="text-xs text-slate-400 mt-1">Click the arrow to open the book!</p>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {/* Project Modal */}
+                <AnimatePresence>
+                    {selectedProject && (
+                        <ProjectModal 
+                            project={selectedProject} 
+                            onClose={() => setSelectedProject(null)} 
+                        />
+                    )}
+                </AnimatePresence>
+
+                {/* Main Container */}
+                <motion.div 
+                    className="perspective-container relative w-full max-w-6xl h-[85vh] flex items-center justify-center p-4"
+                    style={{ perspective: '2000px' }}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ 
+                        opacity: hasEntered ? 1 : 0, 
+                        scale: hasEntered ? 1 : 0.8 
+                    }}
+                    transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+                >
+                    <motion.div
+                        className="book-container relative w-[1000px] h-[700px] max-w-full max-h-full"
+                        style={{ transformStyle: 'preserve-3d' }}
+                        animate={{
+                            rotateX: rotateX,
+                            rotateY: rotateY,
+                        }}
+                        transition={{ type: 'spring', stiffness: 100, damping: 30 }}
+                    >
+                        {/* Left Base */}
+                        <div className="left-base absolute left-0 top-0 w-1/2 h-full bg-slate-100 rounded-l-2xl shadow-2xl z-10 flex flex-col items-center justify-center p-8 border-r border-slate-300">
+                            <div className="text-center space-y-6">
+                                <motion.div 
+                                    initial={{ scale: 0.8, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    transition={{ delay: 0.5 }}
+                                    className="w-32 h-32 mx-auto bg-gradient-to-tr from-cyan-400 to-blue-600 rounded-full p-1 shadow-xl"
+                                >
+                                    <img src="my.png" alt="Ashish" className="w-full h-full rounded-full object-cover border-4 border-white" />
+                                </motion.div>
+                                <div>
+                                    <h1 className="text-4xl font-bold text-slate-800 font-serif">Ashish Kumar</h1>
+                                    <p className="text-indigo-600 font-medium tracking-widest mt-2">BCA STUDENT & DEVELOPER</p>
+                                </div>
+                                <div className="w-16 h-1 bg-slate-300 mx-auto rounded-full" />
+                                <p className="text-slate-500 text-sm leading-relaxed px-4">
+                                    Building digital experiences with Python, React, and creative code.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* PAGE 6: Contact */}
+                        <Page pageIndex={6} isFlipped={isFlipped(6)} totalPages={totalPages} mousePos={mousePos} isMobile={isMobile}>
+                            <PageFront>
+                                <div className="h-full flex flex-col p-8 bg-white relative">
+                                    <h2 className="text-3xl font-serif font-bold text-slate-800 mb-6 border-b pb-2">Get In Touch</h2>
+                                    <div className="space-y-4 flex-1">
+                                        <motion.a href="mailto:kumarashish9589411421@gmail.com" whileHover={{ scale: 1.02, backgroundColor: "#f8fafc" }} className="flex items-center gap-4 p-4 rounded-xl border border-slate-100 shadow-sm transition-colors">
+                                            <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center"><Icon name="mail" size={20} /></div>
+                                            <div>
+                                                <p className="text-xs text-slate-400 uppercase font-bold">Email</p>
+                                                <p className="text-slate-700 font-medium">kumarashish9589411421@gmail.com</p>
+                                            </div>
+                                        </motion.a>
+                                        <motion.a href="tel:+919369228920" whileHover={{ scale: 1.02, backgroundColor: "#f8fafc" }} className="flex items-center gap-4 p-4 rounded-xl border border-slate-100 shadow-sm transition-colors">
+                                            <div className="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center"><Icon name="phone" size={20} /></div>
+                                            <div>
+                                                <p className="text-xs text-slate-400 uppercase font-bold">Phone</p>
+                                                <p className="text-slate-700 font-medium">+91-9369228920</p>
+                                            </div>
+                                        </motion.a>
+                                        <div className="mt-8">
+                                            <p className="text-sm text-slate-500 mb-4 font-medium">Connect on Socials</p>
+                                            <div className="flex gap-4">
+                                                {[{icon: "github", color: "bg-slate-800", link: "https://github.com/ashishkumar9589411421-svg"}, {icon: "linkedin", color: "bg-blue-700", link: "https://www.linkedin.com/in/ashish-kumar-445964324/"}, {icon: "instagram", color: "bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500", link: "https://www.instagram.com/a_s__yadav_"}].map((social, idx) => (
+                                                    <motion.a key={idx} href={social.link} target="_blank" whileHover={{ y: -5, scale: 1.1 }} className={`w-12 h-12 rounded-full ${social.color} text-white flex items-center justify-center shadow-lg`}>
+                                                        <Icon name={social.icon} size={24} />
+                                                    </motion.a>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <MagneticButton onClick={() => handlePrev()} className="absolute bottom-6 left-6 w-12 h-12 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 shadow-md">
+                                        <Icon name="arrow-left" size={24} />
+                                    </MagneticButton>
+                                </div>
+                            </PageFront>
+                            <PageBack>
+                                <div className="h-full flex flex-col items-center justify-center bg-slate-50 p-8 text-center">
+                                    <Icon name="check-circle" size={64} className="text-green-500 mb-4" />
+                                    <h3 className="text-2xl font-serif font-bold text-slate-800">End of Resume</h3>
+                                    <p className="text-slate-500 mt-2">Thank you for viewing my portfolio.</p>
+                                </div>
+                            </PageBack>
+                        </Page>
+
+                        {/* PAGE 5: Achievements */}
+                        <Page pageIndex={5} isFlipped={isFlipped(5)} totalPages={totalPages} mousePos={mousePos} isMobile={isMobile}>
+                            <PageFront>
+                                <div className="h-full flex flex-col p-8 bg-white relative">
+                                    <h2 className="text-3xl font-serif font-bold text-slate-800 mb-2">Achievements</h2>
+                                    <p className="text-slate-500 mb-6">Certifications & Milestones</p>
+                                    
+                                    <div className="flex-1 overflow-y-auto no-scrollbar space-y-3 pr-2">
+                                        {achievements.map((ach, idx) => (
+                                            <motion.div
+                                                key={idx}
+                                                initial={{ opacity: 0, x: -20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ delay: idx * 0.1 }}
+                                                className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all"
+                                            >
+                                                <div className={`w-12 h-12 rounded-full ${ach.color} bg-opacity-10 flex items-center justify-center`}>
+                                                    <Icon name={ach.icon} size={24} className={`text-${ach.color.replace('bg-', '')}`} style={{ color: ach.color.includes('yellow') ? '#eab308' : ach.color.includes('blue') ? '#3b82f6' : ach.color.includes('cyan') ? '#06b6d4' : ach.color.includes('purple') ? '#a855f7' : '#334155' }} />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <h4 className="font-bold text-slate-800 text-sm">{ach.title}</h4>
+                                                    <p className="text-xs text-slate-500">{ach.org} • {ach.year}</p>
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+
+                                    <MagneticButton onClick={() => handleNext()} className="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center shadow-lg">
+                                        <Icon name="arrow-right" size={24} />
+                                    </MagneticButton>
+                                    <MagneticButton onClick={() => handlePrev()} className="absolute bottom-6 left-6 w-12 h-12 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 shadow-md">
+                                        <Icon name="arrow-left" size={24} />
+                                    </MagneticButton>
+                                </div>
+                            </PageFront>
+                            <PageBack>
+                                <div className="h-full flex flex-col items-center justify-center bg-slate-50 p-8 text-center">
+                                    <Icon name="mail" size={48} className="text-slate-300 mb-4" />
+                                    <h3 className="text-xl font-bold text-slate-700">Contact</h3>
+                                    <p className="text-slate-500 mt-2">Let's get in touch</p>
+                                </div>
+                            </PageBack>
+                        </Page>
+
+                        {/* PAGE 4: Skills */}
+                        <Page pageIndex={4} isFlipped={isFlipped(4)} totalPages={totalPages} mousePos={mousePos} isMobile={isMobile}>
+                            <PageFront>
+                                <div className="h-full flex flex-col p-8 bg-white relative">
+                                    <h2 className="text-3xl font-serif font-bold text-slate-800 mb-2">Skills</h2>
+                                    <p className="text-slate-500 mb-4">Technologies I work with</p>
+
+                                    <RadarChart data={skills} />
+
+                                    <div className="space-y-3 flex-1 overflow-y-auto no-scrollbar pr-2">
+                                        {skills.map((skill, idx) => (
+                                            <motion.div key={idx} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.1 }}>
+                                                <div className="flex justify-between mb-1">
+                                                    <span className="font-medium text-slate-700 text-sm">{skill.name}</span>
+                                                    <span className="text-slate-400 text-xs">{skill.level}%</span>
+                                                </div>
+                                                <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                                                    <motion.div className={`h-2 rounded-full ${skill.color}`} initial={{ width: 0 }} animate={{ width: `${skill.level}%` }} transition={{ duration: 1, delay: 0.5 + (idx * 0.1) }} />
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+
+                                    <div className="mt-4 p-3 bg-indigo-50 rounded-xl border border-indigo-100">
+                                        <h4 className="font-bold text-indigo-900 mb-1 flex items-center gap-2 text-sm"><Icon name="graduation-cap" size={14} /> Education</h4>
+                                        <p className="text-xs text-indigo-800">BCA in Computer Science (2024-2026)</p>
+                                    </div>
+
+                                    <MagneticButton onClick={() => handleNext()} className="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center shadow-lg">
+                                        <Icon name="arrow-right" size={24} />
+                                    </MagneticButton>
+                                    <MagneticButton onClick={() => handlePrev()} className="absolute bottom-6 left-6 w-12 h-12 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 shadow-md">
+                                        <Icon name="arrow-left" size={24} />
+                                    </MagneticButton>
+                                </div>
+                            </PageFront>
+                            <PageBack>
+                                <div className="h-full flex flex-col items-center justify-center bg-slate-50 p-8 text-center">
+                                    <Icon name="trophy" size={48} className="text-slate-300 mb-4" />
+                                    <h3 className="text-xl font-bold text-slate-700">Achievements</h3>
+                                    <p className="text-slate-500 mt-2">View my certifications</p>
+                                </div>
+                            </PageBack>
+                        </Page>
+
+                        {/* PAGE 3: Projects - FIXED GLITCHES */}
+                        <Page pageIndex={3} isFlipped={isFlipped(3)} totalPages={totalPages} mousePos={mousePos} isMobile={isMobile}>
+                            <PageFront>
+                                <div className="h-full flex flex-col p-6 bg-white relative">
+                                    <h2 className="text-2xl font-serif font-bold text-slate-800 mb-4">Featured Projects</h2>
+                                    <div className="flex-1 overflow-y-auto no-scrollbar space-y-3 pr-1">
+                                        {projects.map((project, idx) => (
+                                            <motion.div 
+                                                key={project.id}
+                                                className="group p-3 rounded-xl border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all bg-slate-50/50 cursor-pointer"
+                                                whileHover={{ x: 5 }}
+                                                onClick={() => setSelectedProject(project)}
+                                            >
+                                                <div className="flex items-start gap-3">
+                                                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${project.color} flex items-center justify-center text-white shadow-sm shrink-0`}>
+                                                        <Icon name={project.icon} size={20} />
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <div className="flex justify-between items-start">
+                                                            <h4 className="font-bold text-slate-800 text-sm truncate">{project.title}</h4>
+                                                            <span className="text-[10px] px-2 py-0.5 bg-white rounded-full border border-slate-200 text-slate-500 whitespace-nowrap ml-2">{project.category}</span>
+                                                        </div>
+                                                        <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">{project.desc}</p>
+                                                        <div className="flex gap-1 mt-2 flex-wrap">
+                                                            {project.stack.slice(0, 2).map((tech, tIdx) => (
+                                                                <span key={tIdx} className="text-[10px] text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">{tech}</span>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                    <MagneticButton onClick={() => handleNext()} className="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center shadow-lg">
+                                        <Icon name="arrow-right" size={24} />
+                                    </MagneticButton>
+                                    <MagneticButton onClick={() => handlePrev()} className="absolute bottom-6 left-6 w-12 h-12 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 shadow-md">
+                                        <Icon name="arrow-left" size={24} />
+                                    </MagneticButton>
+                                </div>
+                            </PageFront>
+                            <PageBack>
+                                <div className="h-full flex flex-col items-center justify-center bg-slate-50 p-8 text-center">
+                                    <Icon name="bar-chart-2" size={48} className="text-slate-300 mb-4" />
+                                    <h3 className="text-xl font-bold text-slate-700">Skills</h3>
+                                    <p className="text-slate-500 mt-2">Technical expertise</p>
+                                </div>
+                            </PageBack>
+                        </Page>
+
+                        {/* PAGE 2: About */}
+                        <Page pageIndex={2} isFlipped={isFlipped(2)} totalPages={totalPages} mousePos={mousePos} isMobile={isMobile}>
+                            <PageFront>
+                                <div className="h-full flex flex-col p-8 bg-white items-center text-center relative">
+                                    <motion.div className="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-cyan-400 to-blue-600 mb-6 shadow-xl" whileHover={{ scale: 1.05, rotate: 5 }}>
+                                        <img src="my.png" className="w-full h-full rounded-full object-cover border-4 border-white" alt="Profile" />
+                                    </motion.div>
+                                    <h2 className="text-3xl font-serif font-bold text-slate-800 mb-2">Hello!</h2>
+                                    <p className="text-slate-500 mb-6 max-w-xs mx-auto">I'm a passionate developer from India specializing in building modern web interfaces and Python applications.</p>
+                                    <div className="grid grid-cols-2 gap-3 w-full max-w-xs mb-8">
+                                        <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                            <div className="text-2xl font-bold text-indigo-600"><AnimatedCounter value={8} suffix="+" /></div>
+                                            <div className="text-xs text-slate-500">Projects</div>
+                                        </div>
+                                        <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                            <div className="text-2xl font-bold text-indigo-600"><AnimatedCounter value={3} suffix="+" /></div>
+                                            <div className="text-xs text-slate-500">Years Coding</div>
+                                        </div>
+                                    </div>
+                                    <motion.a href="#" download className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-full font-medium shadow-lg hover:bg-slate-800 transition-colors" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                        <Icon name="download" size={18} /> Download CV
+                                    </motion.a>
+                                    <MagneticButton onClick={() => handleNext()} className="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center shadow-lg">
+                                        <Icon name="arrow-right" size={24} />
+                                    </MagneticButton>
+                                    <MagneticButton onClick={() => handlePrev()} className="absolute bottom-6 left-6 w-12 h-12 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 shadow-md">
+                                        <Icon name="arrow-left" size={24} />
+                                    </MagneticButton>
+                                </div>
+                            </PageFront>
+                            <PageBack>
+                                <div className="h-full flex flex-col items-center justify-center bg-slate-50 p-8 text-center">
+                                    <div className="w-20 h-20 bg-white rounded-full shadow-md flex items-center justify-center mb-4">
+                                        <Icon name="folder" size={32} className="text-indigo-500" />
+                                    </div>
+                                    <h3 className="text-xl font-bold text-slate-700">Projects</h3>
+                                    <p className="text-slate-500 mt-2">View my recent work</p>
+                                </div>
+                            </PageBack>
+                        </Page>
+
+                        {/* PAGE 1: Cover */}
+                        <Page pageIndex={1} isFlipped={isFlipped(1)} totalPages={totalPages} mousePos={mousePos} isMobile={isMobile}>
+                            <PageFront isCover={true}>
+                                <div className="h-full flex flex-col items-center justify-center p-10 text-center relative overflow-hidden bg-slate-900">
+                                    <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-indigo-900/50 to-slate-900/50"></div>
+                                    <div className="relative z-10">
+                                        <motion.div initial={{ scale: 0, rotate: -180 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: "spring", stiffness: 100, delay: 0.2 }} className="mb-8 inline-block">
+                                            <div className="w-24 h-24 rounded-full border-2 border-cyan-400/50 flex items-center justify-center p-2">
+                                                <div className="w-full h-full rounded-full bg-cyan-500/20 flex items-center justify-center">
+                                                    <Icon name="code" size={40} className="text-cyan-400" />
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                        <motion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="text-5xl md:text-6xl font-serif font-bold text-white mb-2 tracking-tight">Ashish Kumar</motion.h1>
+                                        <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 0.6 }} className="h-1 w-24 bg-gradient-to-r from-cyan-400 to-indigo-500 mx-auto rounded-full mb-6" />
+                                        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-slate-400 text-lg tracking-widest uppercase">Interactive Resume</motion.p>
+                                    </div>
+                                    <MagneticButton onClick={() => handleNext()} className="absolute bottom-10 right-10 w-16 h-16 rounded-full bg-white text-slate-900 flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:shadow-[0_0_50px_rgba(255,255,255,0.5)] z-20">
+                                        <Icon name="arrow-right" size={32} />
+                                    </MagneticButton>
+                                    <div className="absolute bottom-6 left-0 w-full text-center">
+                                        <p className="text-slate-600 text-xs uppercase tracking-widest">Click arrow to open</p>
+                                    </div>
+                                </div>
+                            </PageFront>
+                            <PageBack>
+                                <div className="h-full flex flex-col items-center justify-center bg-white p-8">
+                                    <h2 className="text-3xl font-serif font-bold text-slate-800 mb-4">Welcome</h2>
+                                    <p className="text-slate-500 text-center">This is an interactive portfolio book. Use the arrows to navigate.</p>
+                                </div>
+                            </PageBack>
+                        </Page>
+
+                    </motion.div>
+                </motion.div>
+
+                {/* Mobile Controls */}
+                {isMobile && (
+                    <div className="fixed bottom-6 left-0 w-full flex justify-center gap-4 z-50">
+                        <button onClick={handlePrev} className="p-3 bg-white rounded-full shadow-lg text-slate-800 disabled:opacity-50" disabled={currentPage === 0}>
+                            <Icon name="arrow-left" size={24} />
+                        </button>
+                        <button onClick={handleNext} className="p-3 bg-slate-800 rounded-full shadow-lg text-white disabled:opacity-50" disabled={currentPage === totalPages}>
+                            <Icon name="arrow-right" size={24} />
+                        </button>
+                    </div>
+                )}
+
+                {/* Progress Dots */}
+                {!isMobile && (
+                    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-50 bg-black/20 backdrop-blur-md p-2 rounded-full border border-white/10">
+                        {[0, 1, 2, 3, 4, 5, 6].map((page) => (
+                            <div key={page} className={`h-2 rounded-full transition-all duration-300 ${currentPage >= page ? 'w-6 bg-cyan-400' : 'w-2 bg-slate-600'}`} />
+                        ))}
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashish Kumar - Portfolio</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to bottom, #020617, #0f172a);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(to right, #22c55e, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(to right, #22c55e, #38bdf8);
+            padding: 12px 32px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            box-shadow: 0 10px 40px rgba(34, 197, 94, 0.5);
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            border: 1px solid #22c55e;
+            color: #22c55e;
+            padding: 12px 32px;
+            border-radius: 8px;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(34, 197, 94, 0.1);
+            transform: scale(1.05);
+        }
+
+        /* Add this to your <style> section */
+.live-preview-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    z-index: 0; 
+    background-color: #020617; /* Background while loading */
+}
+
+/* Ensures the thumbnail stays on top until hovered */
+.thumbnail-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 10;
+    transition: opacity 0.4s ease-in-out;
+}
+
+/* The Magic: Hide thumbnail on hover */
+.project-card:hover .thumbnail-overlay {
+    opacity: 0; 
+    pointer-events: none; /* Allows you to click links in the iframe */
+}
+
+        /* Card Hover Effects */
+        .card {
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(34, 197, 94, 0.5);
+            box-shadow: 0 20px 60px rgba(34, 197, 94, 0.2);
+        }
+        #space-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at center, #0b1021 0%, #000000 100%); /* Deep ISRO Blue/Black */
+            pointer-events: none;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Timeline Line */
+        .timeline-line {
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #22c55e, #38bdf8);
+        }
+
+        /* FAQ Accordion */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-answer.active {
+            max-height: 500px;
+        }
+
+        .chevron {
+            transition: transform 0.3s ease;
+        }
+
+        .chevron.rotate {
+            transform: rotate(180deg);
+        }
+
+        /* Input Styles */
+        input, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #22c55e;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(148, 163, 184, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mobile-hidden {
+                display: none;
+            }
+        }
+
+        /* Tech Icon Animation */
+        .tech-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .tech-icon:nth-child(1) { animation-delay: 0s; }
+        .tech-icon:nth-child(2) { animation-delay: 0.5s; }
+        .tech-icon:nth-child(3) { animation-delay: 1s; }
+        .tech-icon:nth-child(4) { animation-delay: 1.5s; }
+
+        /* Skill Tag Hover */
+        .skill-tag {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .skill-tag:hover {
+            transform: scale(1.1) translateY(-2px);
+        }
+
+        /* Section Spacing */
+        section {
+            padding: 80px 24px;
+        }
+
+        /* Fade In Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Typing effect cursor */
+        .typing-cursor::after {
+            content: "|";
+            margin-left: 4px;
+            animation: blink 1s step-start infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Project expand */
+        .project-expand {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.45s ease, opacity 0.3s ease;
+        }
+
+        .project-card.expanded .project-expand {
+            max-height: 600px;
+            opacity: 1;
+        }
+
+        .project-toggle {
+            margin-top: 0.6rem;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px dashed rgba(148, 163, 184, 0.6);
+            border-radius: 999px;
+            padding: 0.35rem 0.6rem;
+            font-size: 0.75rem;
+            color: var(--text-soft);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-toggle:hover {
+            background: rgba(34, 197, 94, 0.15);
+        }
+
+        .project-toggle .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .project-card.expanded .project-toggle .arrow {
+            transform: rotate(180deg);
+        }
+
+        .project-features {
+            margin-top: 1rem;
+            padding-left: 1.2rem;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+
+        .project-media {
+            margin-bottom: 0.6rem;
+            border-radius: 0.9rem;
+            overflow: hidden;
+            background: #020617;
+            aspect-ratio: 16 / 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-media img,
+        .project-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="space-canvas"></canvas>
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="glass rounded-2xl px-6 py-3 flex items-center justify-between">
+                <!-- Logo -->
+                <div class="text-2xl font-bold gradient-text">Ashish Kumar</div>
+
+                <!-- Nav Links -->
+                <div class="hidden md:flex items-center gap-8 mobile-hidden">
+                    <a href="#about" class="text-gray-400 hover:text-white transition-colors">About</a>
+                    <a href="#skills" class="text-gray-400 hover:text-white transition-colors">Skills</a>
+                    <a href="#projects" class="text-gray-400 hover:text-white transition-colors">Projects</a>
+                    <a href="#contact" class="text-gray-400 hover:text-white transition-colors">Contact</a>
+                </div>
+
+                <!-- Resume Button -->
+                <a href="portfolio.html" class="btn-primary" >
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+    </svg>
+    Resume
+</a>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen flex items-center justify-center px-6 pt-32 pb-20">
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Left Side - Text Content -->
+                <div class="fade-in">
+                    <!-- Badge -->
+                    <div class="inline-block mb-6">
+                        <div class="px-4 py-2 glass rounded-full text-sm text-green-400 border border-green-500/30">
+                            BCA Student • Developer • Designer
+                        </div>
+                    </div>
+
+                    <!-- Main Heading -->
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl mb-6 leading-tight font-bold">
+                        Hi, I'm <span class="gradient-text">Ashish Kumar</span> 👋
+                    </h1>
+
+                    <!-- Subtitle with typing effect -->
+                    <h2 class="text-2xl md:text-3xl text-gray-400 mb-6 typing-cursor">
+                        I'm a <span id="typingRole">Developer</span>
+                    </h2>
+
+                    <!-- Description -->
+                    <p class="text-lg text-gray-400 mb-8 leading-relaxed">
+                        I'm a BCA student and developer who loves building <strong>modern, animated interfaces</strong>
+                        and practical tools — from <em>Python desktop apps</em> like <strong>MadAsGalaxyClock</strong>
+                        and <strong>OBITO AI</strong> to <em>clean, responsive websites</em> with smooth interactions.
+                    </p>
+
+                    <!-- Buttons -->
+                    <div class="flex flex-wrap gap-4">
+                        <button class="btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})">
+                            View Projects
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+
+                        <button class="btn-secondary" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                            </svg>
+                            Contact Me
+                        </button>
+
+                        <a href="resume.pdf" class="btn-secondary" download>
+                            Download Resume
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <!-- Meta Info -->
+                    <div class="grid grid-cols-3 gap-4 mt-8 text-sm">
+                        <div>
+                            <p class="text-gray-500 text-xs uppercase mb-1">Focus</p>
+                            <p class="font-semibold">Web • Python • UI</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-xs uppercase mb-1">Experience</p>
+                            <p class="font-semibold">Student / Fresher</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-xs uppercase mb-1">Location</p>
+                            <p class="font-semibold">India 🇮🇳</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - Profile Card -->
+                <div class="fade-in relative flex items-center justify-center">
+                    <div class="relative w-80 h-80 md:w-96 md:h-96">
+                        <!-- Glowing background -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-green-400/30 to-blue-500/30 rounded-full blur-3xl pulse-glow"></div>
+                        
+                        <!-- Profile Container -->
+                        <div class="relative w-full h-full flex items-center justify-center">
+                            <!-- Rings -->
+                            <div class="absolute inset-8 border-2 border-green-400/50 rounded-full"></div>
+                            <div class="absolute inset-4 border border-purple-500/30 rounded-full"></div>
+
+                            <!-- Profile Image Placeholder -->
+                            <div class="relative w-64 h-64 md:w-72 md:h-72 rounded-full overflow-hidden border-4 border-green-400/30 glass">
+                                <img src="my.png" alt="Ashish Kumar" class="w-full h-full object-cover">
+                            </div>
+
+                            <!-- Floating Tech Icons -->
+                            <div class="tech-icon absolute top-10 left-10 w-12 h-12 rounded-lg glass flex items-center justify-center shadow-lg">
+                                <span class="text-xs font-bold" style="color: #3776ab">Python</span>
+                            </div>
+                            <div class="tech-icon absolute top-20 right-10 w-12 h-12 rounded-lg glass flex items-center justify-center shadow-lg">
+                                <span class="text-xs font-bold" style="color: #e34c26">HTML</span>
+                            </div>
+                            <div class="tech-icon absolute bottom-20 left-5 w-12 h-12 rounded-lg glass flex items-center justify-center shadow-lg">
+                                <span class="text-xs font-bold" style="color: #61dafb">React</span>
+                            </div>
+                            <div class="tech-icon absolute bottom-10 right-5 w-12 h-12 rounded-lg glass flex items-center justify-center shadow-lg">
+                                <span class="text-xs font-bold" style="color: #f7df1e">JS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl mb-4 font-bold">
+                    About <span class="gradient-text">Me</span>
+                </h2>
+                <p class="text-gray-400 text-lg">A quick snapshot of my background and what drives me</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- Timeline -->
+                <div class="relative fade-in">
+                    <div class="timeline-line"></div>
+
+                    <div class="space-y-8">
+                        <!-- Timeline Item 1 -->
+                        <div class="relative pl-16">
+                            <div class="absolute left-0 w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center border-4 border-[#0f172a]">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                    <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                                </svg>
+                            </div>
+                            <div class="glass rounded-xl p-6 card">
+                                <h3 class="text-xl mb-2 font-semibold">BCA Student</h3>
+                                <p class="text-gray-400 mb-2">College • Current</p>
+                                <div class="inline-block px-3 py-1 bg-green-400/20 text-green-400 rounded-full text-sm">Learning</div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 2 -->
+                        <div class="relative pl-16">
+                            <div class="absolute left-0 w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center border-4 border-[#0f172a]">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="16 18 22 12 16 6"></polyline>
+                                    <polyline points="8 6 2 12 8 18"></polyline>
+                                </svg>
+                            </div>
+                            <div class="glass rounded-xl p-6 card">
+                                <h3 class="text-xl mb-2 font-semibold">MadAsGalaxyClock</h3>
+                                <p class="text-gray-400 mb-2">Python • Tkinter • UI</p>
+                                <div class="inline-block px-3 py-1 bg-green-400/20 text-green-400 rounded-full text-sm">Desktop App</div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 3 -->
+                        <div class="relative pl-16">
+                            <div class="absolute left-0 w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center border-4 border-[#0f172a]">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                    <line x1="12" y1="19" x2="12" y2="22"></line>
+                                </svg>
+                            </div>
+                            <div class="glass rounded-xl p-6 card">
+                                <h3 class="text-xl mb-2 font-semibold">OBITO AI Assistant</h3>
+                                <p class="text-gray-400 mb-2">Python • Automation • AI</p>
+                                <div class="inline-block px-3 py-1 bg-green-400/20 text-green-400 rounded-full text-sm">AI Project</div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 4 -->
+                        <div class="relative pl-16">
+                            <div class="absolute left-0 w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center border-4 border-[#0f172a]">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </div>
+                            <div class="glass rounded-xl p-6 card">
+                                <h3 class="text-xl mb-2 font-semibold">Next Step</h3>
+                                <p class="text-gray-400 mb-2">Web • UI • Full-stack</p>
+                                <div class="inline-block px-3 py-1 bg-green-400/20 text-green-400 rounded-full text-sm">Future</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Text -->
+                <div class="flex items-center fade-in">
+                    <div class="glass rounded-2xl p-8 h-full">
+                        <h3 class="text-3xl mb-6 font-bold">
+                            Who <span class="gradient-text">I Am</span>
+                        </h3>
+                        <div class="space-y-4 text-gray-400 leading-relaxed">
+                            <p>
+                                I'm <strong>Ashish Kumar</strong>, a <span class="text-green-400">BCA student and self-taught developer</span>.
+                                I enjoy combining creativity and code to build experiences that are both functional and visually engaging.
+                            </p>
+                            <p>
+                                I've built desktop applications like <strong>MadAsGalaxyClock</strong>, a modern animated clock with an arc-reactor style interface, 
+                                and <strong>OBITO AI</strong>, my custom voice assistant with features like face detection, system control, and more.
+                            </p>
+                            <p>
+                                My current focus is on improving my skills in <span class="text-green-400">modern web development</span>: 
+                                responsive layouts, smooth interactions, clean structure, and eventually full-stack development so I can take projects 
+                                from idea to a complete product.
+                            </p>
+                            <p>
+                                Looking for opportunities, internships, and collaborations to build real-world projects and grow as a developer.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl mb-4 font-bold">
+                    My <span class="gradient-text">Skills</span>
+                </h2>
+                <p class="text-gray-400 text-lg">Technologies and tools I work with</p>
+            </div>
+
+            <!-- Skills Grid -->
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Frontend -->
+                <div class="glass rounded-2xl p-6 card fade-in">
+                    <div class="mb-6">
+                        <div class="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-green-400 to-blue-500 mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="16 18 22 12 16 6"></polyline>
+                                <polyline points="8 6 2 12 8 18"></polyline>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">Frontend Development</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-tag px-4 py-2 glass rounded-lg text-sm border border-white/10" style="color: #e34c26">#HTML5</span>
+                        <span class="skill-tag px-4 py-2 glass rounded-lg text-sm border border-white/10" style="color: #264de4">#CSS3</span>
+                        <span class="skill-tag px-4 py-2 glass rounded-lg text-sm border border-white/10" style="color: #f7df1e">#JavaScript</span>
+                        <span class="skill-tag px-4 py-2 glass rounded-lg text-sm border border-white/10" style="color: #38bdf8">#Responsive</span>
+                    </div>
+                </div>
+
+                <!-- Backend/Python -->
+                <div class="glass rounded-2xl p-6 card fade-in">
+                    <div class="mb-6">
+                        <div class="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">Python & Desktop Apps</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-tag px-4 py-2 glass rounded-lg text-sm border border-white/10" style="color: #3776ab">#Python</span>
+                        <span class="skill-tag px-4 py-2 glass rounded-lg text-sm border border-white/10" style="color: #22c55e">#Tkinter</span>
+                        <span class="skill-tag px-4 py-2 glass rounded-lg text-sm border border-white/10" style="color: #a855f7">#Automation</span>
+                        <span class="skill-tag px-4 py-2 glass rounded-lg text-sm border border-white/10" style="color: #f59e0b">#APIs</span>
+                    </div>
+                </div>
+
+                <!-- Tools & Design -->
+                <div class="glass rounded-2xl p-6 card fade-in">
+                    <div class="mb-6">
+                        <div class="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">Tools & Design</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-tag px-4 py-2 glass rounded-lg text-sm border border-white/10" style="color: #007acc">#VS Code</span>
+                        <span class="skill-tag px-4 py-2 glass rounded-lg text-sm border border-white/10" style="color: #f05032">#Git</span>
+                        <span class="skill-tag px-4 py-2 glass rounded-lg text-sm border border-white/10" style="color: #f24e1e">#Figma</span>
+                        <span class="skill-tag px-4 py-2 glass rounded-lg text-sm border border-white/10" style="color: #22c55e">#UI/UX</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl mb-4 font-bold">
+                    My <span class="gradient-text">Projects</span>
+                </h2>
+                <p class="text-gray-400 text-lg">Things I've built and worked on</p>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1: MadAsGalaxyClock -->
+                <div class="glass rounded-2xl overflow-hidden card fade-in">
+                    <div class="project-media">
+                        <img src="madasclock.png" alt="MadAsGalaxyClock">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl mb-2 font-semibold">⏱ MadAsGalaxyClock</h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            A custom animated desktop clock inspired by sci-fi arc reactors with rotating elements, 
+                            glowing effects, and a clean fullscreen UI.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#Python</span>
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#Tkinter</span>
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#Desktop</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="https://github.com/ashishkumar9589411421-svg/MadAsGalexyClock" target="_blank" class="flex items-center gap-2 text-sm text-gray-400 hover:text-green-400 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+                                    <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                                </svg>
+                                GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: OBITO AI -->
+                <div class="glass rounded-2xl overflow-hidden card fade-in">
+                    <div class="project-media">
+                        <img src="obito-ai.png" alt="OBITO AI">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl mb-2 font-semibold">🎙 OBITO AI Assistant</h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            A personal voice assistant with wake word detection, face recognition, reminders, 
+                            system control, news, weather, and more.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#Python</span>
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#AI</span>
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#OpenCV</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="https://github.com/ashishkumar9589411421-svg/Obito-Assistent" target="_blank" class="flex items-center gap-2 text-sm text-gray-400 hover:text-green-400 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+                                    <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                                </svg>
+                                GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3: TimeJet -->
+                <div class="glass rounded-2xl overflow-hidden card fade-in">
+                    <div class="project-media">
+                        <img src="TimeJetss2.png" alt="TimeJet">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl mb-2 font-semibold">👽 TimeJet</h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            A fully custom desktop clock widget featuring real-time weather, personalized greetings, 
+                            and elegant UI animations.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#Python</span>
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#Weather API</span>
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#UI</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="https://github.com/ashishkumar9589411421-svg/TimeJet" target="_blank" class="flex items-center gap-2 text-sm text-gray-400 hover:text-green-400 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+                                    <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                                </svg>
+                                GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4: The Tongue Taste -->
+                <div class="glass rounded-2xl overflow-hidden card fade-in">
+                    <div class="project-media">
+                        <img src="Screenshot 2026-01-14 101102.png" alt="The Tongue Taste">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl mb-2 font-semibold">🍜 The Tongue Taste</h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            A visually rich, modern restaurant website with bold hero section, immersive food imagery, 
+                            and smooth animations.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#HTML</span>
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#CSS</span>
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#JavaScript</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="https://project-ramen-jan.netlify.app/" target="_blank" class="flex items-center gap-2 text-sm text-gray-400 hover:text-green-400 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                                Live Demo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5: Navya Jewellers (Expandable) -->
+                <div class="glass rounded-2xl overflow-hidden card fade-in project-card">
+                    <div class="project-media">
+                        <img src="nvy.png" alt="Navya Jewellers">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl mb-2 font-semibold">💎 Navya Jewellers</h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            A fully live, production-ready jewellery business website with dynamic frontend, 
+                            secure backend, admin dashboard, and order management.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#Full-Stack</span>
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#Admin Panel</span>
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#Production</span>
+                        </div>
+
+                        <!-- Expandable Content -->
+                        <div class="project-expand">
+                            <ul class="project-features">
+                                <li>✔ Admin dashboard for orders, customers & inventory</li>
+                                <li>✔ Order lifecycle tracking (placed → processing → delivered)</li>
+                                <li>✔ Customer support & enquiry management</li>
+                                <li>✔ Secure backend with authentication & validation</li>
+                                <li>✔ Real-world deployment with live users</li>
+                            </ul>
+                        </div>
+
+                        <div class="flex gap-4 mb-2">
+                            <a href="https://navya-jewellers-b728566e.base44.app/" target="_blank" class="flex items-center gap-2 text-sm text-gray-400 hover:text-green-400 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                                Live Website
+                            </a>
+                        </div>
+
+                        <button class="project-toggle">
+                            <span>View details</span>
+                            <span class="arrow">⌄</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="glass rounded-2xl overflow-hidden card fade-in project-card">
+                    <div class="project-media">
+                        <img src="INS.png" alt="In.dl Downloader">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl mb-2 font-semibold">📸 In.dl Downloader</h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            A powerful, full-stack Instagram media downloader featuring user authentication, 
+                            a credit-based freemium model, and a comprehensive admin dashboard.
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#Flask</span>
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#Python</span>
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#SaaS</span>
+                        </div>
+
+                        <div class="project-expand">
+                            <ul class="project-features">
+                                <li>✔ Secure Admin Panel with User Management</li>
+                                <li>✔ Credit System & Payment Gateway Integration</li>
+                                <li>✔ High-performance media processing (FFmpeg)</li>
+                                <li>✔ User Authentication (Login/Register)</li>
+                                <li>✔ Responsive Dark UI with PWA support</li>
+                            </ul>
+                        </div>
+
+                        <div class="flex gap-4 mb-2">
+                            <a href="https://byashish.online" target="_blank" class="flex items-center gap-2 text-sm text-gray-400 hover:text-green-400 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                                Live Demo
+                            </a>
+                            
+                            <a href="https://github.com/ashishkumar9589411421-svg/INSTA_DOWN" target="_blank" class="flex items-center gap-2 text-sm text-gray-400 hover:text-green-400 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                                </svg>
+                                GitHub
+                            </a>
+                        </div>
+
+                        <button class="project-toggle">
+                            <span>View details</span>
+                            <span class="arrow">⌄</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass rounded-2xl overflow-hidden card fade-in project-card group">
+    
+    <div class="project-media relative w-full h-full">
+        <iframe 
+            src="https://baba-car-bazar-website-v-1-0-0.onrender.com/" 
+            class="live-preview-iframe"
+            title="Live Preview"
+            loading="lazy">
+        </iframe>
+
+        <img>
+            
+        <div class="absolute inset-0 flex items-center justify-center -z-10">
+            <span class="text-green-400 text-xs animate-pulse">Loading Live Preview...</span>
+        </div>
+    </div>
+
+    <div class="p-6">
+        <h3 class="text-xl mb-2 font-semibold">🌟 New Live Project</h3>
+        <p class="text-gray-400 text-sm mb-4">
+            Hover over this card to see the live website in action! 
+            A fully interactive preview built directly into the portfolio.
+        </p>
+
+        <div class="flex flex-wrap gap-2 mb-4">
+            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#LivePreview</span>
+            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#Web</span>
+        </div>
+
+        <div class="flex gap-4">
+            <a href="YOUR_WEBSITE_LINK_HERE" target="_blank" class="flex items-center gap-2 text-sm text-gray-400 hover:text-green-400 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Visit Site
+            </a>
+        </div>
+    </div>
+</div>
+
+                <!-- Project 6: Portfolio -->
+                <div class="glass rounded-2xl overflow-hidden card fade-in">
+                    <div class="project-media">
+                        <img src="Port.png" alt="Portfolio">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl mb-2 font-semibold">🕸 Portfolio Website</h3>
+                        <p class="text-gray-400 text-sm mb-4">
+                            This modern, fully responsive portfolio with glassmorphism effects, animations, 
+                            and smooth scrolling built without heavy frameworks.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#HTML</span>
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#CSS</span>
+                            <span class="px-3 py-1 bg-green-400/10 text-green-400 border border-green-400/30 rounded-full text-xs">#JavaScript</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <span class="text-sm text-gray-400">You're viewing it now!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl mb-4 font-bold">
+                    Get In <span class="gradient-text">Touch</span>
+                </h2>
+                <p class="text-gray-400 text-lg">Let's work together on your next project</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 mb-20">
+                <!-- Contact Info -->
+                <div class="glass rounded-2xl p-8 fade-in">
+                    <h3 class="text-2xl mb-6 font-semibold">Get in touch</h3>
+                    <p class="text-gray-400 mb-6">
+                        I'm open to internships, freelance work, and interesting student projects. 
+                        The fastest way to reach me is by email or WhatsApp.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-400 mb-1">Email</p>
+                                <a href="mailto:kumarashish9589411421@gmail.com" class="text-white hover:text-green-400 transition-colors">
+                                    kumarashish9589411421@gmail.com
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-400 mb-1">WhatsApp</p>
+                                <a href="https://wa.me/919369228920" target="_blank" class="text-white hover:text-green-400 transition-colors">
+                                    +91-9369228920
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-400 mb-1">Location</p>
+                                <p class="text-white">India 🇮🇳</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Links -->
+                    <div class="mt-8">
+                        <h4 class="text-lg mb-4 font-semibold">Connect with me</h4>
+                        <div class="flex gap-4">
+                            <a href="https://github.com/ashishkumar9589411421-svg" target="_blank" class="w-12 h-12 rounded-lg glass flex items-center justify-center hover:border-green-400/50 border border-white/10 transition-all hover:scale-110">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+                                    <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                                </svg>
+                            </a>
+                            <a href="https://www.linkedin.com/in/ashish-kumar-445964324/" target="_blank" class="w-12 h-12 rounded-lg glass flex items-center justify-center hover:border-green-400/50 border border-white/10 transition-all hover:scale-110">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0077b5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                    <rect x="2" y="9" width="4" height="12"></rect>
+                                    <circle cx="4" cy="4" r="2"></circle>
+                                </svg>
+                            </a>
+                            <a href="https://www.instagram.com/a_s__yadav_?igsh=MTM3MmlqcDZ4Zml0Mg==" target="_blank" class="w-12 h-12 rounded-lg glass flex items-center justify-center hover:border-green-400/50 border border-white/10 transition-all hover:scale-110">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E4405F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="glass rounded-2xl p-8 fade-in">
+                    <h3 class="text-2xl mb-6 font-semibold">Send a Message</h3>
+                    <p class="text-gray-400 mb-6">
+                        Send me a quick message directly from here. I'll reply as soon as possible.
+                    </p>
+                    <form id="quickContactForm" action="https://formspree.io/f/mvgjkozy" method="POST" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-sm text-gray-400 mb-2">Your Name</label>
+                            <input type="text" id="name" name="name" placeholder="John Doe" required>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm text-gray-400 mb-2">Your Email</label>
+                            <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm text-gray-400 mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Tell me about your project..." required style="resize: none;"></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary w-full justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                            Send Message
+                        </button>
+                        <div id="formStatus" class="text-sm text-center"></div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center pt-8 border-t border-white/10 fade-in">
+                <p class="text-gray-400">
+                    © <span id="year"></span> Ashish Kumar. Designed with <span class="text-red-500">♥</span> love.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scroll to top button -->
+    <button class="fixed right-6 bottom-6 w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-blue-500 text-white flex items-center justify-center opacity-0 pointer-events-none transition-all" id="scrollTopBtn" style="z-index: 40;">
+        ↑
+    </button>
+
+    <script>
+        // Footer year
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        // Typing effect
+        const typingEl = document.getElementById("typingRole");
+        if (typingEl) {
+            const roles = ["Developer", "Designer", "BCA Student", "Python Enthusiast", "UI Lover"];
+            let roleIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function typeLoop() {
+                const currentRole = roles[roleIndex];
+                const displayed = currentRole.substring(0, charIndex);
+                typingEl.textContent = displayed;
+
+                if (!isDeleting && charIndex < currentRole.length) {
+                    charIndex++;
+                    setTimeout(typeLoop, 120);
+                } else if (!isDeleting && charIndex === currentRole.length) {
+                    setTimeout(() => {
+                        isDeleting = true;
+                        typeLoop();
+                    }, 1200);
+                } else if (isDeleting && charIndex > 0) {
+                    charIndex--;
+                    setTimeout(typeLoop, 70);
+                } else {
+                    isDeleting = false;
+                    roleIndex = (roleIndex + 1) % roles.length;
+                    setTimeout(typeLoop, 300);
+                }
+            }
+            typeLoop();
+        }
+
+        // Scroll reveal
+        const revealElements = document.querySelectorAll(".fade-in");
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Scroll to top
+        const scrollTopBtn = document.getElementById("scrollTopBtn");
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 300) {
+                scrollTopBtn.style.opacity = "1";
+                scrollTopBtn.style.pointerEvents = "auto";
+            } else {
+                scrollTopBtn.style.opacity = "0";
+                scrollTopBtn.style.pointerEvents = "none";
+            }
+        });
+        scrollTopBtn.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        // Project expand toggle
+        document.querySelectorAll(".project-toggle").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const card = btn.closest(".project-card");
+                card.classList.toggle("expanded");
+                btn.querySelector("span").textContent = 
+                    card.classList.contains("expanded") ? "Hide details" : "View details";
+            });
+        });
+        /* -----------------------------------------------
+   ISRO / ROCKET SCIENCE / SOLAR SYSTEM ENGINE
+   ----------------------------------------------- */
+const canvas = document.getElementById('space-canvas');
+const ctx = canvas.getContext('2d');
+
+let width, height, centerX, centerY;
+let stars = [];
+let orbits = [];
+let shootingStars = [];
+
+// Mouse Parallax
+let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+let viewX = 0;
+let viewY = 0;
+
+// Indian Flag Colors
+const COLORS = {
+    saffron: '#FF9933',
+    white: '#FFFFFF',
+    green: '#138808',
+    navy: '#000080',
+    spaceBlue: '#38bdf8'
+};
+
+window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+});
+
+window.addEventListener('resize', init);
+
+// Helper: Rotation logic
+function rotate(cx, cy, x, y, angle) {
+    let radians = (Math.PI / 180) * angle;
+    let cos = Math.cos(radians);
+    let sin = Math.sin(radians);
+    let nx = (cos * (x - cx)) + (sin * (y - cy)) + cx;
+    let ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
+    return [nx, ny];
+}
+
+// 1. BACKGROUND STARS
+class Star {
+    constructor() {
+        this.reset();
+    }
+    reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 1.5;
+        this.alpha = Math.random();
+        this.blink = Math.random() * 0.02;
+    }
+    draw() {
+        this.alpha += this.blink;
+        if (this.alpha <= 0 || this.alpha >= 1) this.blink *= -1;
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+        ctx.fill();
+    }
+}
+
+// 2. THE ORBITING OBJECTS PARENT CLASS
+class OrbitObject {
+    constructor(radius, speed, type) {
+        this.radius = radius;
+        this.angle = Math.random() * 360;
+        this.speed = speed;
+        this.type = type; // 'planet', 'rocket', 'iss', 'satellite'
+        this.trail = [];
+    }
+
+    update() {
+        this.angle += this.speed;
+        // Parallax Offset Calculation
+        let drawX = centerX + viewX + Math.cos(this.angle * Math.PI/180) * this.radius;
+        let drawY = centerY + viewY + Math.sin(this.angle * Math.PI/180) * (this.radius * 0.8); // 0.8 makes it an ellipse (3D feel)
+        
+        // Trail Logic
+        this.trail.push({x: drawX, y: drawY});
+        if (this.trail.length > 25) this.trail.shift();
+
+        this.draw(drawX, drawY);
+    }
+
+    draw(x, y) {
+        // Draw Orbit Line (Faint)
+        ctx.beginPath();
+        ctx.ellipse(centerX + viewX, centerY + viewY, this.radius, this.radius * 0.8, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+        ctx.stroke();
+
+        // Draw Trail
+        for (let i = 0; i < this.trail.length; i++) {
+            let t = this.trail[i];
+            ctx.beginPath();
+            let alpha = i / this.trail.length;
+            
+            // Tricolor Trail for specific objects
+            if (this.type === 'rocket') ctx.fillStyle = `rgba(255, 153, 51, ${alpha})`; // Saffron
+            else if (this.type === 'iss') ctx.fillStyle = `rgba(56, 189, 248, ${alpha})`; // Blue
+            else ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.3})`;
+            
+            ctx.arc(t.x, t.y, 1.5, 0, Math.PI*2);
+            ctx.fill();
+        }
+
+        ctx.save();
+        ctx.translate(x, y);
+
+        // --- DRAWING THE OBJECTS ---
+        
+        if (this.type === 'rocket') {
+            // ROTATE ROCKET TO FACE DIRECTION
+            // Angle + 90 degrees correction
+            ctx.rotate((this.angle + 90) * Math.PI / 180);
+            
+            // Rocket Body
+            ctx.fillStyle = '#e2e8f0';
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 5, 15, 0, 0, Math.PI*2);
+            ctx.fill();
+            
+            // Fins (Indian Tricolor)
+            ctx.fillStyle = COLORS.saffron;
+            ctx.fillRect(-6, 5, 4, 8); // Left Fin
+            ctx.fillStyle = COLORS.green;
+            ctx.fillRect(2, 5, 4, 8);  // Right Fin
+            
+            // Engine Flame
+            ctx.fillStyle = '#f59e0b';
+            ctx.beginPath();
+            ctx.moveTo(-3, 15);
+            ctx.lineTo(0, 25 + Math.random()*5); // Flickering flame
+            ctx.lineTo(3, 15);
+            ctx.fill();
+
+        } else if (this.type === 'iss') {
+            // International Space Station Shape
+            ctx.fillStyle = '#94a3b8'; // Metallic
+            ctx.fillRect(-15, -2, 30, 4); // Main beam
+            
+            // Solar Panels (Blue Grid)
+            ctx.fillStyle = COLORS.spaceBlue;
+            ctx.fillRect(-20, -8, 8, 16); // Left Panel
+            ctx.fillRect(12, -8, 8, 16);  // Right Panel
+            
+            // Glow
+            ctx.shadowColor = COLORS.spaceBlue;
+            ctx.shadowBlur = 10;
+
+        } else if (this.type === 'satellite') {
+            // Simple Satellite
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(0, 0, 3, 0, Math.PI*2);
+            ctx.fill();
+            // Blinking Light
+            if (Math.floor(Date.now() / 500) % 2 === 0) {
+                ctx.fillStyle = 'red';
+                ctx.fillRect(-1, -1, 2, 2);
+            }
+
+        } else {
+            // Standard Planet
+            ctx.fillStyle = this.type;
+            ctx.beginPath();
+            ctx.arc(0, 0, 6, 0, Math.PI*2);
+            ctx.fill();
+            // Shadow (3D effect)
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.beginPath();
+            ctx.arc(2, 2, 5, 0, Math.PI*2);
+            ctx.fill();
+        }
+
+        ctx.restore();
+    }
+}
+
+// 3. SHOOTING STARS
+class ShootingStar {
+    constructor() {
+        this.reset();
+    }
+    reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height * 0.5;
+        this.len = Math.random() * 80 + 10;
+        this.speed = Math.random() * 10 + 6;
+        this.size = Math.random() * 1 + 0.1;
+        this.angle = 45; // Diagonal fall
+    }
+    draw() {
+        this.x -= this.speed;
+        this.y += this.speed;
+        
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle * Math.PI / 180);
+        
+        let gradient = ctx.createLinearGradient(0, 0, this.len, 0);
+        gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+        gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+        
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, this.len, this.size);
+        ctx.restore();
+
+        if (this.x < 0 || this.y > height) this.reset();
+    }
+}
+
+// INIT
+function init() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    centerX = width / 2;
+    centerY = height / 2;
+
+    stars = [];
+    orbits = [];
+    shootingStars = [];
+
+    // Add Stars
+    for (let i = 0; i < 200; i++) stars.push(new Star());
+
+    // Add Shooting Stars
+    for (let i = 0; i < 2; i++) shootingStars.push(new ShootingStar());
+
+    // --- ADD SOLAR SYSTEM OBJECTS ---
+    
+    // 1. Mercury-ish
+    orbits.push(new OrbitObject(60, 0.8, '#a3a3a3'));
+    
+    // 2. Venus-ish
+    orbits.push(new OrbitObject(100, 0.6, '#fbbf24'));
+    
+    // 3. EARTH & ISRO ROCKET
+    orbits.push(new OrbitObject(160, 0.4, '#3b82f6')); // Earth blue
+    orbits.push(new OrbitObject(200, 0.7, 'rocket'));  // The Rocket!
+    
+    // 4. Mars (Red)
+    orbits.push(new OrbitObject(260, 0.3, '#ef4444')); 
+    
+    // 5. ISS Station (Fast & Far)
+    orbits.push(new OrbitObject(340, 0.2, 'iss'));
+
+    // 6. Tricolor Satellites (Outer ring)
+    orbits.push(new OrbitObject(400, 0.15, COLORS.saffron));
+    orbits.push(new OrbitObject(420, 0.15, COLORS.white));
+    orbits.push(new OrbitObject(440, 0.15, COLORS.green));
+}
+
+function animate() {
+    ctx.clearRect(0, 0, width, height);
+
+    // Parallax Math (Smooth Camera)
+    let targetX = (mouse.x - width/2) * 0.02;
+    let targetY = (mouse.y - height/2) * 0.02;
+    viewX += (targetX - viewX) * 0.05;
+    viewY += (targetY - viewY) * 0.05;
+
+    // Draw Stars
+    stars.forEach(star => star.draw());
+
+    // Draw Shooting Stars
+    shootingStars.forEach(s => s.draw());
+
+    // Draw Central Sun / Core (Glowing)
+    ctx.save();
+    ctx.translate(centerX + viewX, centerY + viewY);
+    ctx.shadowBlur = 40;
+    ctx.shadowColor = '#fbbf24'; // Sun glow
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(0, 0, 15, 0, Math.PI*2);
+    ctx.fill();
+    
+    // Indian Chakra Blue Ring inside Sun
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = COLORS.navy;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(0, 0, 15, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.restore();
+
+    // Draw Orbits & Objects
+    orbits.forEach(orbit => orbit.update());
+
+    requestAnimationFrame(animate);
+}
+
+init();
+animate();
+
+        // Contact form
+        const quickForm = document.getElementById("quickContactForm");
+        const formStatus = document.getElementById("formStatus");
+        if (quickForm && formStatus) {
+            quickForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                formStatus.textContent = "Sending...";
+                formStatus.style.color = "#22c55e";
+
+                const formData = new FormData(quickForm);
+                try {
+                    const response = await fetch(quickForm.action, {
+                        method: "POST",
+                        body: formData,
+                        headers: { "Accept": "application/json" }
+                    });
+
+                    if (response.ok) {
+                        formStatus.textContent = "Thank you! Your message has been sent.";
+                        formStatus.style.color = "#22c55e";
+                        quickForm.reset();
+                    } else {
+                        formStatus.textContent = "Something went wrong. Please try again.";
+                        formStatus.style.color = "#f97373";
+                    }
+                } catch (err) {
+                    formStatus.textContent = "Network error. Please check your connection.";
+                    formStatus.style.color = "#f97373";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
