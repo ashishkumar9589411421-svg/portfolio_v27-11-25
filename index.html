@@ -1665,6 +1665,7 @@
     
     <script>
         // --- NEW: Live GitHub Data Fetcher ---
+        // --- Live GitHub Data Fetcher ---
         async function fetchGitHubData() {
             try {
                 const response = await fetch('https://api.github.com/users/ashishkumar9589411421-svg');
@@ -1673,9 +1674,9 @@
                 if (data.public_repos) {
                     document.querySelectorAll('.github-repo-counter').forEach(el => {
                         el.setAttribute('data-target', data.public_repos);
-                        // If it has already animated or is stuck on 0, update it directly
-                        if(el.textContent !== "0" && el.textContent !== "0+") {
-                           el.textContent = data.public_repos + (data.public_repos > 100 ? '+' : '');
+                        // Agar already 0 se bada dikh raha hai, toh naya data fetch hone par update kar do
+                        if(el.textContent !== "0" && !el.hasAttribute('data-animating')) {
+                            animateCounter(el);
                         }
                     });
                 }
@@ -1834,7 +1835,11 @@
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
                         
-                        // Animate counters
+                        // FIX: Look inside the container for any counters and animate them
+                        const counters = entry.target.querySelectorAll('.counter');
+                        counters.forEach(counter => animateCounter(counter));
+                        
+                        // Just in case the target itself is a counter
                         if (entry.target.classList.contains('counter')) {
                             animateCounter(entry.target);
                         }
@@ -1863,11 +1868,16 @@
         
         // Counter Animation
         function animateCounter(el) {
+            // Prevent double firing
+            if (el.hasAttribute('data-animating')) return;
+            el.setAttribute('data-animating', 'true');
+
             const target = parseInt(el.getAttribute('data-target'));
             
             // Safety check against zero or NaN target
             if (isNaN(target) || target <= 0) {
                 el.textContent = "0";
+                el.removeAttribute('data-animating');
                 return;
             }
 
@@ -1880,6 +1890,7 @@
                 if (current >= target) {
                     el.textContent = target + (target >= 1000 ? '+' : '');
                     clearInterval(timer);
+                    el.removeAttribute('data-animating');
                 } else {
                     el.textContent = Math.floor(current);
                 }
