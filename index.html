@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <!-- SEO & Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Ashish Kumar - BCA Student | Full-Stack Developer | Python Automation Developer. Building production-ready web applications and intelligent automation tools.">
@@ -9,34 +8,28 @@
     <meta name="author" content="Ashish Kumar">
     <meta name="robots" content="index, follow">
     
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ashishkumar.dev">
     <meta property="og:title" content="Ashish Kumar - Full Stack Developer Portfolio">
     <meta property="og:description" content="BCA Student building production-ready web apps and automation tools. View my projects and hire me for internships.">
     <meta property="og:image" content="https://ashishkumar.dev/og-image.jpg">
     
-    <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://ashishkumar.dev">
     <meta property="twitter:title" content="Ashish Kumar - Developer Portfolio">
     <meta property="twitter:description" content="Building modern web applications and Python automation tools.">
     <meta property="twitter:image" content="https://ashishkumar.dev/twitter-image.jpg">
     
-    <!-- Canonical -->
     <link rel="canonical" href="https://ashishkumar.dev">
     
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
     
     <title>Ashish Kumar | Full-Stack Developer & Python Automation Expert</title>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -711,7 +704,6 @@
     </style>
 </head>
 <body class="antialiased">
-    <!-- Page Loader -->
     <div class="loader-container" id="pageLoader">
         <div class="loader-text">Ashish Kumar</div>
         <div class="text-gray-400 mt-2 text-sm tracking-widest">INITIALIZING PORTFOLIO...</div>
@@ -721,24 +713,18 @@
         <div class="mt-4 text-xs text-gray-500" id="loaderStatus">Loading assets...</div>
     </div>
     
-    <!-- Custom Cursor -->
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-outline" id="cursorOutline"></div>
     
-    <!-- Scroll Progress -->
     <div class="scroll-progress" id="scrollProgress"></div>
     
-    <!-- Canvas Background -->
     <canvas id="space-canvas"></canvas>
     
-    <!-- Navigation -->
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-4 transition-all duration-300" style="transform: translateY(-100%);">
         <div class="max-w-7xl mx-auto">
             <div class="glass-strong rounded-2xl px-6 py-3 flex items-center justify-between">
-                <!-- Logo -->
                 <a href="#hero" class="text-xl font-bold font-display gradient-text hover-trigger">Ashish Kumar</a>
                 
-                <!-- Desktop Nav -->
                 <div class="hidden md:flex items-center gap-8">
                     <a href="#about" class="text-sm text-gray-400 hover:text-white transition-colors hover-trigger">About</a>
                     <a href="#why-hire" class="text-sm text-gray-400 hover:text-white transition-colors hover-trigger">Why Hire Me</a>
@@ -747,13 +733,11 @@
                     <a href="#learning" class="text-sm text-gray-400 hover:text-white transition-colors hover-trigger">Learning</a>
                     <a href="#contact" class="text-sm text-gray-400 hover:text-white transition-colors hover-trigger">Contact</a>
                     
-                    <!-- Theme Toggle -->
                     <div class="theme-toggle hover-trigger" id="themeToggle" style="display: none;">
                         <div class="theme-toggle-ball"></div>
                     </div>
                 </div>
                 
-                <!-- CTA Button -->
                 <a href="resume.html" download class="hidden md:flex magnetic-btn text-sm hover-trigger">
                     <span>RESUME</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -763,7 +747,6 @@
                     </svg>
                 </a>
                 
-                <!-- Mobile Menu Button -->
                 <button class="md:hidden hamburger hover-trigger" id="hamburgerBtn" aria-label="Toggle Menu">
                     <span></span>
                     <span></span>
@@ -773,7 +756,6 @@
         </div>
     </nav>
     
-    <!-- Mobile Menu -->
     <div class="mobile-menu md:hidden" id="mobileMenu">
         <div class="flex flex-col items-center justify-center h-full gap-8">
             <a href="#about" class="text-2xl font-display text-white hover:text-green-400 transition-colors mobile-link">About</a>
@@ -788,9 +770,7 @@
         </div>
     </div>
     
-    <!-- Hero Section -->
     <section id="hero" class="min-h-screen flex items-center justify-center px-4 sm:px-6 pt-20 pb-12 relative overflow-hidden">
-        <!-- Floating Tech Icons -->
         <div class="absolute inset-0 pointer-events-none overflow-hidden">
             <div class="tech-float absolute top-20 left-[10%] w-16 h-16 glass rounded-xl flex items-center justify-center text-2xl" style="animation-delay: 0s;">🐍</div>
             <div class="tech-float absolute top-40 right-[15%] w-14 h-14 glass rounded-xl flex items-center justify-center text-2xl" style="animation-delay: 1s;">⚛️</div>
@@ -801,33 +781,27 @@
         
         <div class="max-w-7xl mx-auto w-full relative z-10">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <!-- Left Content -->
                 <div class="reveal active">
-                    <!-- Badge -->
                     <div class="inline-flex items-center gap-2 px-4 py-2 glass rounded-full text-sm text-green-400 border border-green-500/30 mb-6 hover-trigger">
                         <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
                         Available for Internship
                     </div>
                     
-                    <!-- Main Heading -->
                     <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold font-display leading-tight mb-6">
                         Hi, I'm <span class="gradient-text">Ashish Kumar</span> 👋
                     </h1>
                     
-                    <!-- Typewriter -->
                     <div class="text-xl sm:text-2xl text-gray-400 mb-6 font-display h-8">
                         I'm a <span id="typewriter" class="text-green-400"></span><span class="animate-pulse">|</span>
                     </div>
                     
-                    <!-- Professional Headline -->
                     <p class="text-lg text-gray-400 mb-8 leading-relaxed max-w-2xl">
                         I build <strong class="text-white">production-ready web applications</strong> and <strong class="text-white">intelligent automation tools</strong> combining performance, UI, and scalability. Specializing in full-stack development with Python and modern web technologies.
                     </p>
                     
-                    <!-- Stats -->
                     <div class="grid grid-cols-3 gap-6 mb-8">
                         <div class="text-center sm:text-left">
-                            <div class="text-3xl sm:text-4xl font-bold font-display gradient-text counter" data-target="7">0</div>
+                            <div class="text-3xl sm:text-4xl font-bold font-display gradient-text counter github-repo-counter" data-target="9">0</div>
                             <div class="text-xs sm:text-sm text-gray-500 mt-1">Projects Built</div>
                         </div>
                         <div class="text-center sm:text-left">
@@ -840,7 +814,6 @@
                         </div>
                     </div>
                     
-                    <!-- CTAs -->
                     <div class="flex flex-wrap gap-4">
                         <button class="magnetic-btn hover-trigger" onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})">
                             <span>View Projects</span>
@@ -865,22 +838,17 @@
                     </div>
                 </div>
                 
-                <!-- Right Content - Profile -->
                 <div class="relative flex items-center justify-center reveal active" style="transition-delay: 0.2s;">
                     <div class="relative w-72 h-72 sm:w-96 sm:h-96">
-                        <!-- Glowing Background -->
                         <div class="absolute inset-0 bg-gradient-to-r from-green-400/30 to-blue-500/30 rounded-full blur-3xl animate-pulse-slow"></div>
                         
-                        <!-- Rings -->
                         <div class="absolute inset-4 border-2 border-green-400/30 rounded-full animate-spin-slow"></div>
                         <div class="absolute inset-8 border border-purple-500/20 rounded-full" style="animation: spin 15s linear infinite reverse;"></div>
                         
-                        <!-- Profile Image -->
                         <div class="absolute inset-12 rounded-full overflow-hidden border-4 border-green-400/30 glass">
                             <img src="my.png" alt="Ashish Kumar" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Ashish&backgroundColor=0f172a'">
                         </div>
                         
-                        <!-- Floating Badges -->
                         <div class="absolute -right-4 top-1/4 glass px-3 py-2 rounded-lg text-xs font-semibold text-green-400 border border-green-400/30 animate-float">
                             Python Expert
                         </div>
@@ -892,7 +860,6 @@
             </div>
         </div>
         
-        <!-- Scroll Indicator -->
         <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500">
                 <polyline points="6 9 12 15 18 9"></polyline>
@@ -900,7 +867,6 @@
         </div>
     </section>
     
-    <!-- Why Hire Me Section -->
     <section id="why-hire" class="py-20 px-4 sm:px-6">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16 reveal">
@@ -911,7 +877,6 @@
             </div>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
-                <!-- Card 1 -->
                 <div class="tilt-card glass rounded-2xl p-6 hover-trigger group">
                     <div class="tilt-content">
                         <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform">
@@ -922,7 +887,6 @@
                     </div>
                 </div>
                 
-                <!-- Card 2 -->
                 <div class="tilt-card glass rounded-2xl p-6 hover-trigger group">
                     <div class="tilt-content">
                         <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform">
@@ -933,7 +897,6 @@
                     </div>
                 </div>
                 
-                <!-- Card 3 -->
                 <div class="tilt-card glass rounded-2xl p-6 hover-trigger group">
                     <div class="tilt-content">
                         <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform">
@@ -944,7 +907,6 @@
                     </div>
                 </div>
                 
-                <!-- Card 4 -->
                 <div class="tilt-card glass rounded-2xl p-6 hover-trigger group">
                     <div class="tilt-content">
                         <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-400 to-red-600 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform">
@@ -955,7 +917,6 @@
                     </div>
                 </div>
                 
-                <!-- Card 5 -->
                 <div class="tilt-card glass rounded-2xl p-6 hover-trigger group">
                     <div class="tilt-content">
                         <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-400 to-rose-600 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform">
@@ -966,7 +927,6 @@
                     </div>
                 </div>
                 
-                <!-- Card 6 -->
                 <div class="tilt-card glass rounded-2xl p-6 hover-trigger group">
                     <div class="tilt-content">
                         <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-400 to-teal-600 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform">
@@ -980,7 +940,6 @@
         </div>
     </section>
     
-    <!-- Skills Section -->
     <section id="skills" class="py-20 px-4 sm:px-6">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16 reveal">
@@ -991,7 +950,6 @@
             </div>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
-                <!-- Frontend -->
                 <div class="glass rounded-2xl p-6 reveal">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center">
@@ -1033,7 +991,6 @@
                     </div>
                 </div>
                 
-                <!-- Backend -->
                 <div class="glass rounded-2xl p-6 reveal">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center">
@@ -1074,7 +1031,6 @@
                     </div>
                 </div>
                 
-                <!-- Database -->
                 <div class="glass rounded-2xl p-6 reveal">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center">
@@ -1117,7 +1073,6 @@
                     </div>
                 </div>
                 
-                <!-- Tools -->
                 <div class="glass rounded-2xl p-6 reveal">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center">
@@ -1161,13 +1116,12 @@
         </div>
     </section>
     
-    <!-- Metrics Section -->
     <section id="metrics" class="py-20 px-4 sm:px-6 relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-r from-green-500/5 to-blue-500/5"></div>
         <div class="max-w-7xl mx-auto relative z-10">
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
                 <div class="text-center reveal">
-                    <div class="text-4xl sm:text-5xl font-bold font-display gradient-text mb-2 counter" data-target="7">0</div>
+                    <div class="text-4xl sm:text-5xl font-bold font-display gradient-text mb-2 counter github-repo-counter" data-target="9">0</div>
                     <div class="text-gray-400">Projects Built</div>
                 </div>
                 <div class="text-center reveal" style="transition-delay: 0.1s;">
@@ -1186,7 +1140,6 @@
         </div>
     </section>
     
-    <!-- Projects Section -->
     <section id="projects" class="py-20 px-4 sm:px-6">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-12 reveal">
@@ -1195,7 +1148,6 @@
                 </h2>
                 <p class="text-gray-400 text-lg mb-8">Case studies of production-ready applications</p>
                 
-                <!-- Filter Buttons -->
                 <div class="flex flex-wrap justify-center gap-3 mb-8 stagger-children">
                     <button class="filter-btn active hover-trigger" data-filter="all">All Projects</button>
                     <button class="filter-btn hover-trigger" data-filter="web">Web Apps</button>
@@ -1204,15 +1156,12 @@
                     <button class="filter-btn hover-trigger" data-filter="ai">AI/Automation</button>
                 </div>
                 
-                <!-- Search -->
                 <div class="max-w-md mx-auto mb-12 reveal">
                     <input type="text" id="projectSearch" placeholder="Search projects..." class="search-input hover-trigger">
                 </div>
             </div>
             
-            <!-- Projects Grid -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="projectsGrid">
-                <!-- Project 1: Navya Jewellers -->
                 <div class="project-card glass rounded-2xl overflow-hidden reveal" data-category="web saas" data-title="Navya Jewellers jewellery e-commerce">
                     <div class="project-image-container aspect-video bg-gradient-to-br from-yellow-600/20 to-orange-600/20 flex items-center justify-center relative group">
                         <img src="nvy.png" alt="Navya Jewellers" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
@@ -1254,7 +1203,6 @@
                             </button>
                         </div>
                         
-                        <!-- Expandable Details -->
                         <div class="expandable-content hidden mt-4 pt-4 border-t border-white/10 text-sm text-gray-400 space-y-2">
                             <p>✓ Admin dashboard for orders, customers & inventory</p>
                             <p>✓ Order lifecycle tracking (placed → processing → delivered)</p>
@@ -1265,7 +1213,6 @@
                     </div>
                 </div>
                 
-                <!-- Project 2: In.dl Downloader -->
                 <div class="project-card glass rounded-2xl overflow-hidden reveal" data-category="saas web" data-title="In.dl Instagram downloader SaaS">
                     <div class="project-image-container aspect-video bg-gradient-to-br from-purple-600/20 to-pink-600/20 flex items-center justify-center relative group">
                         <img src="INS.png" alt="In.dl Downloader" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
@@ -1319,7 +1266,6 @@
                     </div>
                 </div>
                 
-                <!-- Project 3: The Tongue Taste -->
                 <div class="project-card glass rounded-2xl overflow-hidden reveal" data-category="web" data-title="The Tongue Taste restaurant">
                     <div class="project-image-container aspect-video bg-gradient-to-br from-red-600/20 to-orange-600/20 flex items-center justify-center relative group">
                         <img src="Screenshot 2026-01-14 101102.png" alt="The Tongue Taste" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
@@ -1351,7 +1297,6 @@
                     </div>
                 </div>
                 
-                <!-- Project 4: OBITO AI -->
                 <div class="project-card glass rounded-2xl overflow-hidden reveal" data-category="ai desktop" data-title="OBITO AI Assistant voice">
                     <div class="project-image-container aspect-video bg-gradient-to-br from-blue-600/20 to-cyan-600/20 flex items-center justify-center relative group">
                         <img src="obito-ai.png" alt="OBITO AI" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
@@ -1378,7 +1323,6 @@
                     </div>
                 </div>
                 
-                <!-- Project 5: MadAsGalaxyClock -->
                 <div class="project-card glass rounded-2xl overflow-hidden reveal" data-category="desktop" data-title="MadAsGalaxyClock python tkinter">
                     <div class="project-image-container aspect-video bg-gradient-to-br from-indigo-600/20 to-purple-600/20 flex items-center justify-center relative group">
                         <img src="madasclock.png" alt="MadAsGalaxyClock" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
@@ -1405,7 +1349,6 @@
                     </div>
                 </div>
                 
-                <!-- Project 6: TimeJet -->
                 <div class="project-card glass rounded-2xl overflow-hidden reveal" data-category="desktop" data-title="TimeJet weather clock">
                     <div class="project-image-container aspect-video bg-gradient-to-br from-teal-600/20 to-green-600/20 flex items-center justify-center relative group">
                         <img src="TimeJetss2.png" alt="TimeJet" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
@@ -1432,11 +1375,10 @@
                     </div>
                 </div>
                 
-                <!-- Project 7: Baba Car Bazar -->
-                <div class="project-card glass rounded-2xl overflow-hidden reveal" data-category="web" data-title="The Tongue Taste restaurant">
+                <div class="project-card glass rounded-2xl overflow-hidden reveal" data-category="web" data-title="Baba Car Bazar">
                     <div class="project-image-container aspect-video bg-gradient-to-br from-red-600/20 to-orange-600/20 flex items-center justify-center relative group">
-                        <img src="babacar.png" alt="The Tongue Taste" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                        <div class="absolute inset-0 flex items-center justify-center text-6xl hidden">🍜</div>
+                        <img src="babacar.png" alt="Baba Car Bazar" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="absolute inset-0 flex items-center justify-center text-6xl hidden">🚗</div>
                         <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
                             <button class="preview-btn magnetic-btn text-sm py-2 px-4" data-url="https://baba-car-bazar-website-v-1-0-0.onrender.com/">
                                 <span>Live Preview</span>
@@ -1465,14 +1407,12 @@
                 </div>
             </div>
             
-            <!-- No Results Message -->
             <div id="noResults" class="hidden text-center py-12 text-gray-500">
                 No projects found matching your search.
             </div>
         </div>
     </section>
     
-    <!-- Currently Learning Section -->
     <section id="learning" class="py-20 px-4 sm:px-6">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16 reveal">
@@ -1483,7 +1423,6 @@
             </div>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
-                <!-- React -->
                 <div class="glass rounded-2xl p-6 reveal hover-trigger group">
                     <div class="flex items-center justify-between mb-4">
                         <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">⚛️</div>
@@ -1497,7 +1436,6 @@
                     <div class="mt-2 text-xs text-gray-500 text-right">40% Complete</div>
                 </div>
                 
-                <!-- Backend Architecture -->
                 <div class="glass rounded-2xl p-6 reveal hover-trigger group">
                     <div class="flex items-center justify-between mb-4">
                         <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">🏗️</div>
@@ -1511,7 +1449,6 @@
                     <div class="mt-2 text-xs text-gray-500 text-right">35% Complete</div>
                 </div>
                 
-                <!-- DSA -->
                 <div class="glass rounded-2xl p-6 reveal hover-trigger group">
                     <div class="flex items-center justify-between mb-4">
                         <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">🧮</div>
@@ -1525,7 +1462,6 @@
                     <div class="mt-2 text-xs text-gray-500 text-right">50% Complete</div>
                 </div>
                 
-                <!-- Advanced Flask -->
                 <div class="glass rounded-2xl p-6 reveal hover-trigger group">
                     <div class="flex items-center justify-between mb-4">
                         <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">🌶️</div>
@@ -1542,7 +1478,6 @@
         </div>
     </section>
     
-    <!-- GitHub Stats Section -->
     <section id="github" class="py-20 px-4 sm:px-6">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16 reveal">
@@ -1555,20 +1490,20 @@
             <div class="grid md:grid-cols-3 gap-6 stagger-children">
                 <div class="github-card reveal text-center">
                     <div class="text-4xl mb-3">📊</div>
-                    <div class="text-3xl font-bold font-display gradient-text mb-1" id="repoCount">12+</div>
+                    <div class="text-3xl font-bold font-display gradient-text mb-1 counter github-repo-counter" id="repoCount" data-target="9">0</div>
                     <div class="text-gray-400 text-sm">Public Repositories</div>
                 </div>
                 
-                <div class="github-card reveal text-center">
-                    <div class="text-4xl mb-3">💻</div>
-                    <div class="text-3xl font-bold font-display gradient-text mb-1">Python</div>
-                    <div class="text-gray-400 text-sm">Top Language</div>
+                <div class="github-card reveal text-center" style="transition-delay: 0.1s;">
+                    <div class="text-4xl mb-3">🌐</div>
+                    <div class="text-3xl font-bold font-display gradient-text mb-1">HTML</div>
+                    <div class="text-gray-400 text-sm">Top Language (45.4%)</div>
                 </div>
                 
-                <div class="github-card reveal text-center">
-                    <div class="text-4xl mb-3">🚀</div>
-                    <div class="text-3xl font-bold font-display gradient-text mb-1">500+</div>
-                    <div class="text-gray-400 text-sm">Commits This Year</div>
+                <div class="github-card reveal text-center" style="transition-delay: 0.2s;">
+                    <div class="text-4xl mb-3">🔥</div>
+                    <div class="text-3xl font-bold font-display gradient-text mb-1 counter github-contrib-counter" data-target="138">0</div>
+                    <div class="text-gray-400 text-sm">Total Contributions</div>
                 </div>
             </div>
             
@@ -1583,7 +1518,6 @@
         </div>
     </section>
     
-    <!-- Contact Section -->
     <section id="contact" class="py-20 px-4 sm:px-6">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16 reveal">
@@ -1594,7 +1528,6 @@
             </div>
             
             <div class="grid lg:grid-cols-2 gap-12">
-                <!-- Contact Info -->
                 <div class="reveal">
                     <h3 class="text-2xl font-bold mb-6">Contact Information</h3>
                     <p class="text-gray-400 mb-8">I'm open to internships, freelance work, and interesting collaborations. Reach out through any of these channels:</p>
@@ -1639,7 +1572,6 @@
                         </div>
                     </div>
                     
-                    <!-- Social Links -->
                     <div>
                         <h4 class="text-lg font-bold mb-4">Follow Me</h4>
                         <div class="flex gap-4">
@@ -1667,7 +1599,6 @@
                     </div>
                 </div>
                 
-                <!-- Contact Form -->
                 <div class="glass rounded-2xl p-8 reveal" style="transition-delay: 0.2s;">
                     <h3 class="text-2xl font-bold mb-6">Send Message</h3>
                     <form id="contactForm" action="https://formspree.io/f/mvgjkozy" method="POST">
@@ -1701,7 +1632,6 @@
         </div>
     </section>
     
-    <!-- Footer -->
     <footer class="py-8 px-4 sm:px-6 border-t border-white/10">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="text-gray-500 text-sm">
@@ -1715,14 +1645,12 @@
         </div>
     </footer>
     
-    <!-- Scroll to Top Button -->
     <button class="scroll-top hover-trigger" id="scrollTopBtn" aria-label="Scroll to top">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="18 15 12 9 6 15"></polyline>
         </svg>
     </button>
     
-    <!-- Live Preview Modal -->
     <div class="modal" id="previewModal">
         <div class="modal-content relative">
             <button class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors z-10 hover-trigger" id="closeModal">
@@ -1736,6 +1664,29 @@
     </div>
     
     <script>
+        // --- NEW: Live GitHub Data Fetcher ---
+        async function fetchGitHubData() {
+            try {
+                const response = await fetch('https://api.github.com/users/ashishkumar9589411421-svg');
+                const data = await response.json();
+
+                if (data.public_repos) {
+                    document.querySelectorAll('.github-repo-counter').forEach(el => {
+                        el.setAttribute('data-target', data.public_repos);
+                        // If it has already animated or is stuck on 0, update it directly
+                        if(el.textContent !== "0" && el.textContent !== "0+") {
+                           el.textContent = data.public_repos + (data.public_repos > 100 ? '+' : '');
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching GitHub data:", error);
+            }
+        }
+        
+        // Start fetching data immediately
+        fetchGitHubData();
+
         // Page Loader
         const loader = document.getElementById('pageLoader');
         const loaderProgress = document.getElementById('loaderProgress');
@@ -1913,6 +1864,13 @@
         // Counter Animation
         function animateCounter(el) {
             const target = parseInt(el.getAttribute('data-target'));
+            
+            // Safety check against zero or NaN target
+            if (isNaN(target) || target <= 0) {
+                el.textContent = "0";
+                return;
+            }
+
             const duration = 2000;
             const step = target / (duration / 16);
             let current = 0;
@@ -1920,7 +1878,7 @@
             const timer = setInterval(() => {
                 current += step;
                 if (current >= target) {
-                    el.textContent = target + (target > 100 ? '+' : '');
+                    el.textContent = target + (target >= 1000 ? '+' : '');
                     clearInterval(timer);
                 } else {
                     el.textContent = Math.floor(current);
@@ -2081,7 +2039,7 @@
         // Current Year
         document.getElementById('currentYear').textContent = new Date().getFullYear();
         
-        // Space Canvas Animation (Preserved from original)
+        // Space Canvas Animation
         const canvas = document.getElementById('space-canvas');
         const ctx = canvas.getContext('2d');
         
